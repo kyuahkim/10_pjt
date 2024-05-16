@@ -25,7 +25,6 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useBankStore } from './stores/bank'
 
 const store = useBankStore()
-console.log(store.token)
 </script>
 
 
