@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
@@ -75,6 +76,10 @@ def save_deposit_products(request):
             serializer.save(product = product)
     # 데이터 삽입 실패시 적절한 실패 안내 문구를 작성해야한다. 
     return JsonResponse({"message" : "okay"})
+
+class DepositProductsViewSet(viewsets.ModelViewSet):
+    queryset = DepositProducts.objects.all()
+    serializer_class  = DepositProductsSerializer
 
 # #  GET : 전체 정기예금 상품 목록 반환, POST 상품 데이터 저장
 # @api_view(["GET", "POST"])

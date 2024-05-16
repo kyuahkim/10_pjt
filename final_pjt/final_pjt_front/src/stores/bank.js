@@ -13,18 +13,18 @@ export const useBankStore = defineStore('article', () => {
   const getProducts = function () {
     axios({
       method: 'get',
-      url: `http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json`,
-      params: {
-        auth: API_KEY,
-        topFinGrpNo: '020000',
-        pageNo: 1
-      },
-      headers:{
-        Authorization: `Token ${token.value}`
-      }
+      url: `${API_URL}/api/products/`,
+      // params: {
+      //   auth: API_KEY,
+      //   topFinGrpNo: '020000',
+      //   pageNo: 1
+      // },
+      // headers:{
+      //   Authorization: `Token ${token.value}`
+      // }
     })
     .then((response) => {
-      console.log('성공')
+      console.log(response)
       products.value = response.data
     })
     .catch((error) => {
