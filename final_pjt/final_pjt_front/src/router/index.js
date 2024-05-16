@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useBankStore } from '@/stores/bank'
+
 import HomeView from '@/views/HomeView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
@@ -35,6 +37,14 @@ const router = createRouter({
     //   component: DetailView
     // },
   ]
+})
+
+router.beforeEach((to, from) => {
+  const store = useBankStore()
+  if ((to.name === 'login' || to.name === 'signup') && (store.isLogin)) {
+    window.alert('이미 로그인 되어있습니다.')
+    return { name: 'home'}
+  }
 })
 
 export default router

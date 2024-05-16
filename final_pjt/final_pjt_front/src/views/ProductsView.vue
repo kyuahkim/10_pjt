@@ -18,7 +18,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
 
 const store = useBankStore()
-const products = store.products
+const products = store.getProducts()
 </script>
 
 
