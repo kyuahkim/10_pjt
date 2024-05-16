@@ -24,7 +24,7 @@ export const useBankStore = defineStore('article', () => {
       // }
     })
     .then((response) => {
-      console.log(response)
+      console.log(response.data)
       products.value = response.data
     })
     .catch((error) => {

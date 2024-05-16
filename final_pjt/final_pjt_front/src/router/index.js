@@ -7,6 +7,7 @@ import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import DetailView from '@/views/DetailView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,11 +32,16 @@ const router = createRouter({
       name: 'products',
       component: ProductsView
     },
-    // {
-    //   path: '/products/:id',
-    //   name: 'detail',
-    //   component: DetailView
-    // },
+    {
+      path: '/products/:id',
+      name: 'detail',
+      component: DetailView
+    },
+    {
+      path: '/profile/:userId',
+      name: 'profile',
+      component: ProfileView
+    },
   ]
 })
 

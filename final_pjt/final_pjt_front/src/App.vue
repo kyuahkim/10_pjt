@@ -11,8 +11,9 @@
     <!-- 회원 탈퇴의 경우에는 마이페이지에서 사용 -->
     <div v-else>
       <RouterLink :to="{ name: 'home'}">Home</RouterLink> | 
-      <RouterLink :to="{ name: 'login'}">로그 아웃</RouterLink> | 
-      <RouterLink :to="{ name: 'products'}">전체 상품 목록</RouterLink>
+      <RouterLink :to="{ name: 'products'}">전체 상품 목록</RouterLink> | 
+      <!-- <RouterLink :to="{ name: 'profile', params: { userId: id }}">전체 상품 목록</RouterLink> -->
+      <button @click="logout">로그 아웃</button>
     </div>
   </div>
   <RouterView />
@@ -22,9 +23,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { useBankStore } from './stores/bank'
-import { onMounted } from 'vue'
 
 const store = useBankStore()
+console.log(store.token)
 </script>
 
 
