@@ -3,8 +3,8 @@
     <h3>금융 상품명</h3>
     <p>
       {{ product.fin_prdt_nm }}
-      <button @click="store.interest(product.id)" class="btn">
-        <span v-if="store.interestProdcutsList.includes(product.id)">❤️</span>
+      <button @click.prevent="store.interest(product.id)" class="btn">
+        <span v-if="store.interestProdcuts.includes(product.id)">❤️</span>
         <span v-else>🤍</span>
       </button>
     </p><hr>

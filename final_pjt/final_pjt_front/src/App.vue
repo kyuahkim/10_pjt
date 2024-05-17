@@ -20,6 +20,7 @@ const logout = function () {
   console.log('로그 아웃')
   store.logout()
 }
+console.log(store.id)
 </script>
 
 
