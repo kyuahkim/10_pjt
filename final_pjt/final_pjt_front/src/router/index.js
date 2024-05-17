@@ -8,6 +8,7 @@ import LogInView from '@/views/LogInView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import DetailView from '@/views/DetailView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import exchangeRateView from '@/views/exchangeRateView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,11 @@ const router = createRouter({
       path: '/profile/:userId',
       name: 'profile',
       component: ProfileView
+    },
+    {
+      path: '/exchangerate',
+      name: 'exchangerate',
+      component: exchangeRateView
     },
   ]
 })
