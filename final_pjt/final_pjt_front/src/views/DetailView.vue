@@ -1,5 +1,9 @@
 <template>
   <div>
+    <h1>상품 세부 정보</h1>
+  </div>
+  <hr>
+  <div>
     <h3>금융 상품명</h3>
     <p>
       {{ product.fin_prdt_nm }}

@@ -8,6 +8,7 @@ export const useBankStore = defineStore('bank', () => {
   const interestProdcuts = ref([])
   const token = ref(null)
   const id = ref(null)
+  const userdata = ref([])
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
 
@@ -30,6 +31,24 @@ export const useBankStore = defineStore('bank', () => {
     })
     .catch((error) => {
       console.log(error)
+    })
+  }
+
+  const getUserInfo = function (userId) {
+    axios({
+      method: 'get',
+      url: `${API_URL}/users/${userId}/`, // 특정 사용자의 ID를 이용하여 요청 URL 생성
+      headers: {
+        Authorization: `Token ${token.value}` // 인증 토큰 헤더 추가
+      }
+    })
+    .then((response) => {
+      // 요청이 성공했을 때 실행되는 코드
+      console.log('사용자 정보:', response.data);
+      userdata.value = response.data
+    })
+    .catch((error) => {
+      console.error('사용자 정보를 불러오는 중 오류 발생:', error);
     })
   }
 
@@ -70,8 +89,6 @@ export const useBankStore = defineStore('bank', () => {
     })
       .then((response) => {
         token.value = response.data.key
-        // id.value = response.data.id
-        console.log(response)
         router.push({ name: 'home' })
       })
       .catch((error) => {
@@ -106,5 +123,5 @@ export const useBankStore = defineStore('bank', () => {
     return interests
   })
 
-  return { products, interestProdcuts, token, id, getProducts, signup, login, logout, isLogin, interest, interestProdcutsList, }
+  return { products, interestProdcuts, token, id, userdata, getProducts, getUserInfo, signup, login, logout, isLogin, interest, interestProdcutsList, }
 }, { persist : true})

@@ -88,12 +88,10 @@ def get_exchange_rate(request):
         'data':'AP01'
     }
     response = requests.get(url,params=params)
-    
     try:
         data = response.json()  # Assuming the API returns JSON data
     except ValueError:
         return JsonResponse({'error': 'Invalid JSON response'}, status=500)
-
     return JsonResponse(data, safe=False)
     # params authkey, data : APO1
 # #  GET : 전체 정기예금 상품 목록 반환, POST 상품 데이터 저장
