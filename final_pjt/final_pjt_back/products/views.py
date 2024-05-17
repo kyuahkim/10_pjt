@@ -12,7 +12,8 @@ from .serializers import DepositOptionsSerializer, DepositProductsSerializer
 
 API_KEY = settings.DEPOSIT_API_KEY
 
-# A : 정기예금 상품 목록과 옵션목록 DB에 저장
+# 정기예금 상품 목록과 옵션목록 DB에 저장
+# 기업 입장에서 (POST) 를 나아아아중에 만들어줄것
 @api_view(["GET"])
 def save_deposit_products(request):
     # API로 전체 데이터 다 가져온거고 

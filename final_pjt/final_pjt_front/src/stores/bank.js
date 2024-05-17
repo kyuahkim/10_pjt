@@ -7,6 +7,7 @@ export const useBankStore = defineStore('bank', () => {
   const products = ref([])
   const interestProdcuts = ref([])
   const token = ref(null)
+  const id = ref(null)
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
 
@@ -33,12 +34,19 @@ export const useBankStore = defineStore('bank', () => {
   }
 
   const signup = function (payload) {
-    const { username, password1, password2} = payload
+    const username = payload.username
+    const password1 = payload.password1
+    const password = payload.password1
+    const nickname = payload.nickname
+    const email = payload.email
+    const age = payload.age
+    const money = payload.money
+    const salary = payload.salary
     axios({
       method: 'post',
-      url: `${API_URL}/accounts/signup/`,
+      url: `${API_URL}/users/save-users/`,
       data: {
-        username, password1, password2
+        username, password, nickname, email, age, money, salary,
       }
     })
       .then((response) => {
@@ -62,6 +70,8 @@ export const useBankStore = defineStore('bank', () => {
     })
       .then((response) => {
         token.value = response.data.key
+        // id.value = response.data.id
+        console.log(response)
         router.push({ name: 'home' })
       })
       .catch((error) => {
@@ -96,5 +106,5 @@ export const useBankStore = defineStore('bank', () => {
     return interests
   })
 
-  return { products, interestProdcuts, token, getProducts, signup, login, logout, isLogin, interest, interestProdcutsList, }
+  return { products, interestProdcuts, token, id, getProducts, signup, login, logout, isLogin, interest, interestProdcutsList, }
 }, { persist : true})

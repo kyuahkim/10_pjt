@@ -11,7 +11,7 @@
     <div v-else>
       <RouterLink :to="{ name: 'home'}">Home</RouterLink> | 
       <RouterLink :to="{ name: 'products'}">전체 상품 목록</RouterLink> | 
-      <!-- <RouterLink :to="{ name: 'profile', params: { userId: id }}">마이 페이지</RouterLink> -->
+      <!-- <RouterLink :to="{ name: 'profile', params: { userId: store.id }}">마이 페이지</RouterLink> -->
       <button @click="logout">로그 아웃</button>
     </div>
   </div>
@@ -29,6 +29,7 @@ const logout = function () {
   console.log('로그 아웃')
   store.logout()
 }
+console.log(store.id)
 </script>
 
 
