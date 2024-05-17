@@ -69,6 +69,11 @@ export const useBankStore = defineStore('article', () => {
       })
   }
 
+  const logout = function () {
+    token.value = null
+    router.push({ name: 'login' })
+  }
+
   const isLogin = computed(() => {
     if (token.value === null) {
       return false
@@ -77,5 +82,5 @@ export const useBankStore = defineStore('article', () => {
     }
   })
 
-  return { products, token, getProducts, signup, login, isLogin }
+  return { products, token, getProducts, signup, login, logout, isLogin }
 }, { persist : true})

@@ -11,7 +11,7 @@ from .serializers import DepositOptionsSerializer, DepositProductsSerializer
 # Create your views here.
 
 API_KEY = settings.DEPOSIT_API_KEY
-
+EXCHANGE_RATE_API_KEY = settings.EXCHANGE_RATE_API_KEY
 # A : 정기예금 상품 목록과 옵션목록 DB에 저장
 @api_view(["GET"])
 def save_deposit_products(request):
@@ -81,6 +81,21 @@ class DepositProductsViewSet(viewsets.ModelViewSet):
     queryset = DepositProducts.objects.all()
     serializer_class  = DepositProductsSerializer
 
+def get_exchange_rate(request):
+    url ='https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
+    params = {
+        'authkey': EXCHANGE_RATE_API_KEY,
+        'data':'AP01'
+    }
+    response = requests.get(url,params=params)
+    
+    try:
+        data = response.json()  # Assuming the API returns JSON data
+    except ValueError:
+        return JsonResponse({'error': 'Invalid JSON response'}, status=500)
+
+    return JsonResponse(data, safe=False)
+    # params authkey, data : APO1
 # #  GET : 전체 정기예금 상품 목록 반환, POST 상품 데이터 저장
 # @api_view(["GET", "POST"])
 # def deposit_products(request):
