@@ -3,12 +3,12 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
-export const useBankStore = defineStore('article', () => {
+export const useBankStore = defineStore('bank', () => {
   const products = ref([])
+  const interestProdcuts = ref([])
   const token = ref(null)
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
-  const API_KEY = '1855094a2cbbfd266414bf0d3408369e'
 
   const getProducts = function () {
     axios({
@@ -82,5 +82,19 @@ export const useBankStore = defineStore('article', () => {
     }
   })
 
-  return { products, token, getProducts, signup, login, logout, isLogin }
+  const interest = function (productId) {
+    if (interestProdcuts.value.includes(productId)) {
+      const Index = interestProdcuts.value.findIndex((id) => id === productId)
+      interestProdcuts.value.splice(Index, 1)
+    } else {
+      interestProdcuts.value.push(productId)
+    }
+  }
+
+  const interestProdcutsList = computed(() => {
+    const interests = products.value.filter((product) => interestProdcuts.value.includes(product.id))
+    return interests
+  })
+
+  return { products, interestProdcuts, token, getProducts, signup, login, logout, isLogin, interest, interestProdcutsList, }
 }, { persist : true})

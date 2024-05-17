@@ -15,6 +15,11 @@ import SideBar from '@/components/SideBar.vue'
 import exchangeRateView from './views/exchangeRateView.vue';
 import LogInView from './views/LogInView.vue';
 const store = useBankStore()
+
+const logout = function () {
+  console.log('로그 아웃')
+  store.logout()
+}
 </script>
 
 
