@@ -56,7 +56,7 @@
                 </li>
                 <!-- <li class="nav-item" >
                   :class="{ active: $store.state.curPage == 'searchApt' }"
-                  <RouterLink :to="{name:'profile'}" class="nav-link">
+                  <RouterLink :to="{name:'profile', params:{'userId' : user.id}}" class="nav-link">
                     <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'user']"/></span>
                     <span class="sidebar-text"> 마이 페이지</span>
                   </RouterLink>
@@ -133,10 +133,17 @@
 
 
 <script setup>
-  import { RouterLink, RouterView } from 'vue-router'
-  import { useBankStore } from '@/stores/bank'
+import { RouterLink, RouterView } from 'vue-router'
+import { useBankStore } from '@/stores/bank'
+import { onMounted } from 'vue'
 
-  const store = useBankStore()
+const store = useBankStore()
+
+onMounted(() => {
+  store.getCurrentUser()
+})
+
+const user = store.userdata
 </script>
 
 

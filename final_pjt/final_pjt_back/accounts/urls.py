@@ -8,5 +8,6 @@ router.register(r'user',views.UserViewSet)
 app_name = 'accounts'
 urlpatterns = [
     path('save-users/', views.save_user, name="save_user"),
+    path('current-user/', views.current_user, name='current_user'),
     path('',include(router.urls)),
 ]

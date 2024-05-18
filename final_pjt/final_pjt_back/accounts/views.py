@@ -34,3 +34,12 @@ class UserViewSet(viewsets.ModelViewSet):
     User = get_user_model()
     queryset = User.objects.all()
     serializer_class  = UserSerializers
+
+@api_view(["GET"])
+def current_user(request):
+    User = get_user_model()
+    user = request.user
+    if user.is_authenticated:
+        serializer = UserSerializers(user)
+        return Response(serializer.data)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)

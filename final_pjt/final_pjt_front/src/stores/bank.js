@@ -8,7 +8,7 @@ export const useBankStore = defineStore('bank', () => {
   const interestProdcuts = ref([])
   const token = ref(null)
   const id = ref(null)
-  const userdata = ref([])
+  const userdata = ref({})
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
 
@@ -34,10 +34,10 @@ export const useBankStore = defineStore('bank', () => {
     })
   }
 
-  const getUserInfo = function (userId) {
+  const getUserInfo = function () {
     axios({
       method: 'get',
-      url: `${API_URL}/users/${userId}/`, // 특정 사용자의 ID를 이용하여 요청 URL 생성
+      url: `${API_URL}/users/save-users/`, // 특정 사용자의 ID를 이용하여 요청 URL 생성
       headers: {
         Authorization: `Token ${token.value}` // 인증 토큰 헤더 추가
       }
@@ -89,6 +89,7 @@ export const useBankStore = defineStore('bank', () => {
     })
       .then((response) => {
         token.value = response.data.key
+        getCurrentUser()
         router.push({ name: 'home' })
       })
       .catch((error) => {
@@ -98,6 +99,7 @@ export const useBankStore = defineStore('bank', () => {
 
   const logout = function () {
     token.value = null
+    userdata.value = {}
     router.push({ name: 'login' })
   }
 
@@ -123,5 +125,24 @@ export const useBankStore = defineStore('bank', () => {
     return interests
   })
 
-  return { products, interestProdcuts, token, id, userdata, getProducts, getUserInfo, signup, login, logout, isLogin, interest, interestProdcutsList, }
+  const getCurrentUser = function () {
+    if (isLogin) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/users/current-user/`,
+        headers: {
+          Authorization: `Token ${token.value}`
+        }
+      })
+      .then((response) => {
+        // 현재 사용자 정보
+        userdata.value = response.data
+      })
+      .catch((error) => {
+        console.error('현재 사용자 정보를 불러오는 중 오류 발생:', error)
+      })
+    }
+  }
+
+  return { products, interestProdcuts, token, id, userdata, getProducts, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, interestProdcutsList, }
 }, { persist : true})
