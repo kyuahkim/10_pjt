@@ -8,12 +8,13 @@
         <!-- 이름만 가지고는 판별하기 힘들다 -->
         <!-- 어떤 특징을 쓸 것인지 고민 -> 이름, 은행이름, 금리...? -->
         <!-- 어느 부분을 눌러서 넘길건지 고민 -> 전체 박스인지 이름 클릭으로 넘길것인지? -->
+        {{ product.id }}.
         <RouterLink
           :to="{ name: 'detail', params:{ id: product.id } }">
           {{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}
         </RouterLink>
         <button @click.prevent="store.interest(product.id)" class="btn">
-          <span v-if="store.interestProdcuts.includes(product.id)">❤️</span>
+          <span v-if="store.currentUserData.financial_products.includes(product.id)">❤️</span>
           <span v-else>🤍</span>
         </button>
       </li>

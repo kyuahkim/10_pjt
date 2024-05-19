@@ -5,10 +5,10 @@ import { useRouter } from 'vue-router'
 
 export const useBankStore = defineStore('bank', () => {
   const products = ref([])
-  const interestProdcuts = ref([])
   const token = ref(null)
   const id = ref(null)
-  const userdata = ref({})
+  const currentUserData = ref({})
+  const userdata = ref([])
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
 
@@ -16,14 +16,6 @@ export const useBankStore = defineStore('bank', () => {
     axios({
       method: 'get',
       url: `${API_URL}/api/products/`,
-      // params: {
-      //   auth: API_KEY,
-      //   topFinGrpNo: '020000',
-      //   pageNo: 1
-      // },
-      // headers:{
-      //   Authorization: `Token ${token.value}`
-      // }
     })
     .then((response) => {
       // console.log(response.data)
@@ -34,22 +26,45 @@ export const useBankStore = defineStore('bank', () => {
     })
   }
 
+  // DB에 저장된 모든 사용자를 불러오는 함수
   const getUserInfo = function () {
     axios({
       method: 'get',
-      url: `${API_URL}/users/save-users/`, // 특정 사용자의 ID를 이용하여 요청 URL 생성
+      url: `${API_URL}/users/save-users/`,
       headers: {
-        Authorization: `Token ${token.value}` // 인증 토큰 헤더 추가
+        Authorization: `Token ${token.value}`
       }
     })
     .then((response) => {
       // 요청이 성공했을 때 실행되는 코드
-      console.log('사용자 정보:', response.data);
+      // console.log('사용자 정보:', response.data);
       userdata.value = response.data
     })
     .catch((error) => {
       console.error('사용자 정보를 불러오는 중 오류 발생:', error);
     })
+  }
+
+  const getCurrentUser = function () {
+    if (isLogin.value) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/users/current-user/`,
+        headers: {
+          Authorization: `Token ${token.value}`
+        }
+      })
+      .then((response) => {
+        // 현재 사용자 정보
+        currentUserData.value = response.data
+        // if (userdata.value.financial_products) {
+        //   interestProdcuts.value = userdata.value.financial_products.split(',').map(id => parseInt(id, 10))
+        // }
+      })
+      .catch((error) => {
+        console.error('현재 사용자 정보를 불러오는 중 오류 발생:', error)
+      })
+    }
   }
 
   const signup = function (payload) {
@@ -112,37 +127,33 @@ export const useBankStore = defineStore('bank', () => {
   })
 
   const interest = function (productId) {
-    if (interestProdcuts.value.includes(productId)) {
-      const Index = interestProdcuts.value.findIndex((id) => id === productId)
-      interestProdcuts.value.splice(Index, 1)
+    if (currentUserData.value.financial_products.includes(productId)) {
+      const Index = currentUserData.value.financial_products.findIndex((id) => id === productId)
+      currentUserData.value.financial_products.splice(Index, 1)
     } else {
-      interestProdcuts.value.push(productId)
+      currentUserData.value.financial_products.push(productId)
     }
+    updateUserFinancialProducts()
   }
 
-  const interestProdcutsList = computed(() => {
-    const interests = products.value.filter((product) => interestProdcuts.value.includes(product.id))
-    return interests
-  })
-
-  const getCurrentUser = function () {
-    if (isLogin) {
-      axios({
-        method: 'get',
-        url: `${API_URL}/users/current-user/`,
-        headers: {
-          Authorization: `Token ${token.value}`
-        }
-      })
-      .then((response) => {
-        // 현재 사용자 정보
-        userdata.value = response.data
-      })
-      .catch((error) => {
-        console.error('현재 사용자 정보를 불러오는 중 오류 발생:', error)
-      })
-    }
+  const updateUserFinancialProducts = function () {
+    axios({
+      method: 'put',
+      url: `${API_URL}/users/update-financial-products/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      },
+      data: {
+        financial_products: currentUserData.value.financial_products
+      }
+    })
+    .then((response) => {
+      console.log('사용자 금융 상품 정보 업데이트 성공')
+    })
+    .catch((error) => {
+      console.error('사용자 금융 상품 정보 업데이트 중 오류 발생:', error)
+    })
   }
 
-  return { products, interestProdcuts, token, id, userdata, getProducts, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, interestProdcutsList, }
+  return { products, token, id, userdata, currentUserData, getProducts, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, updateUserFinancialProducts, }
 }, { persist : true})

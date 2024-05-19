@@ -3,7 +3,8 @@
     <h1>Home</h1>
     <hr>
     <div v-if="store.isLogin">
-      <p>어서오세요 {{ user.username }}님!</p>
+      <p>어서오세요 {{ store.currentUserData.nickname }}님!</p>
+      <p>{{ store.userdata }}</p>
     </div>
     <div v-else>
       <p>로그인 또는 회원가입이 필요합니다.</p>
@@ -17,14 +18,14 @@ import { onMounted, ref } from 'vue'
 import { useBankStore } from '@/stores/bank'
 
 const store = useBankStore()
-const user = ref({})
 
-onMounted(async () => {
+onMounted(() => {
   if (store.isLogin) {
+    store.getUserInfo()
     store.getCurrentUser()
-    user.value = store.userdata
   }
 })
+console.log(store.currentUserData)
 </script>
 
 

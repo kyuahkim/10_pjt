@@ -115,13 +115,12 @@ def get_exchange_rate(request):
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# # 특정 상품의 옵션 리스트 반환
-# # D
-# @api_view(["GET"])
-# def deposit_products_options(request, fin_prdt_cd):
-#     options = DepositOptions.objects.filter(fin_prdt_cd=fin_prdt_cd)
-#     serializer = DepositOptionsSerializer(options, many=True)
-#     return Response(serializer.data)
+# 특정 상품의 옵션 리스트 반환
+@api_view(["GET"])
+def deposit_products_options(request, fin_prdt_cd):
+    options = DepositOptions.objects.filter(fin_prdt_cd=fin_prdt_cd)
+    serializer = DepositOptionsSerializer(options, many=True)
+    return Response(serializer.data)
 
 
 # # 가입 기간에 상관없이 금리가 가장 높은 상품과 해당 상품의 옵션 리스트 출력 

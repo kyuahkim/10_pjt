@@ -54,13 +54,13 @@
                     <span class="sidebar-text"> 전체 상품 목록</span>
                   </RouterLink>
                 </li>
-                <!-- <li class="nav-item" >
-                  :class="{ active: $store.state.curPage == 'searchApt' }"
-                  <RouterLink :to="{name:'profile', params:{'userId' : user.id}}" class="nav-link">
+                <li class="nav-item" >
+                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                  <RouterLink :to="{name:'profile', params:{'userId' : store.currentUserData.id}}" class="nav-link">
                     <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'user']"/></span>
                     <span class="sidebar-text"> 마이 페이지</span>
                   </RouterLink>
-                </li> -->
+                </li>
                 <li class="nav-item" >
                   <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
                   <span class="nav-link">
@@ -140,10 +140,10 @@ import { onMounted } from 'vue'
 const store = useBankStore()
 
 onMounted(() => {
-  store.getCurrentUser()
+  if (store.isLogin) {
+    store.getCurrentUser()
+  }
 })
-
-const user = store.userdata
 </script>
 
 
