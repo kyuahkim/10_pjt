@@ -108,6 +108,7 @@ export const useBankStore = defineStore('bank', () => {
         router.push({ name: 'home' })
       })
       .catch((error) => {
+        alert('이름과 비밀번호가 일치하지 않거나 존재하지 않습니다. 바르게 입력하거나 회원가입을 진행해 주세요.')
         console.log(error)
       })
   }

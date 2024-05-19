@@ -10,6 +10,7 @@ import DetailView from '@/views/DetailView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import exchangeRateView from '@/views/exchangeRateView.vue'
 import UpdateProfileView from '@/views/UpdateProfileView.vue'
+import MapView from '@/views/MapView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +54,11 @@ const router = createRouter({
       path: '/updateprofile',
       name: 'updateprofile',
       component: UpdateProfileView
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: MapView
     },
   ]
 })

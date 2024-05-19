@@ -16,16 +16,16 @@
     <hr>
     <div>
       <h5>관심 상품 번호</h5>
-      <ul v-if="exist">
-        <br>
-        관심 상품을 등록해주세요.
-      </ul>
-      <ul v-else>
+      <ul v-if="productsNumbers.length">
         <li v-for="number of productsNumbers">
           <RouterLink :to="{ name: 'detail', params:{ id: number } }">
             {{ number }}
           </RouterLink>
         </li>
+      </ul>
+      <ul v-else>
+        <br>
+        관심 상품을 등록해주세요.
       </ul>
     </div>
     <hr>
@@ -49,21 +49,13 @@ const route = useRoute()
 const router = useRouter()
 const store = useBankStore()
 const productsNumbers = ref([])
-const exist = ref(false)
 
 const userId = ref(route.params.userId)
 
 onMounted(() => {
-  if (store.isLogin) {
-    store.getUserInfo()
-    store.getCurrentUser()
-    productsNumbers.value = store.currentUserData.financial_products
-    if (productsNumbers==[]) {
-      exist.value=false
-    } else {
-      exist.value=true
-    }
-  }
+  store.getUserInfo()
+  store.getCurrentUser()
+  productsNumbers.value = store.currentUserData.financial_products
 })
 
 console.log(store.currentUserData)
@@ -92,6 +84,8 @@ const confirmDeleteAccount = () => {
     deleteAccount()
   }
 }
+
+
 </script>
 
 

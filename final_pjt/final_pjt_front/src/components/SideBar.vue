@@ -10,13 +10,43 @@
               <span class="sidebar-text"> Home</span>
             </RouterLink>
           </li>
-          <li class="nav-item mt-2 mb-3" >
-            <!-- :class="{ active: $store.state.curPage == 'home' }" -->
-            <RouterLink :to="{name:'exchangerate'}" class="nav-link">
-              <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'circle-info']"/></span>
-              <span class="sidebar-text"> 환율 정보</span>
-            </RouterLink>
+          <li v-if="store.isLogin" class="nav-item mb-2 mt-2">
+            <div>
+              <span class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#searchSub2" aria-expanded="false" aria-controls="searchSub2">
+                <span>
+                  <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'search']"/></span>
+                  <span class="sidebar-text"> service</span>
+                </span>
+                <span class="link-arrow"><font-awesome-icon :icon="['fas', 'chevron-right']"/></span>
+              </span>
+            </div>
+            <div class="multi-level collapse" id="searchSub2">
+              <ul class="flex-column nav">
+                <li class="nav-item" >
+                  <!-- :class="{ active: $store.state.curPage == 'home' }" -->
+                  <RouterLink :to="{name:'exchangerate'}" class="nav-link">
+                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'circle-info']"/></span>
+                    <span class="sidebar-text"> 환율 정보</span>
+                  </RouterLink>
+                </li>
+                <li class="nav-item" >
+                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                  <RouterLink :to="{name:'products'}" class="nav-link">
+                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'building']"/></span>
+                    <span class="sidebar-text"> 전체 상품 목록</span>
+                  </RouterLink>
+                </li>
+                <li class="nav-item" >
+                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                  <RouterLink :to="{name:'map'}" class="nav-link">
+                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'map-marker']"/></span>
+                    <span class="sidebar-text"> 주변 은행 검색</span>
+                  </RouterLink>
+                </li>
+              </ul>
+            </div>
           </li>
+          <li v-else></li>
           <li class="nav-item mb-2 mt-2">
             <div>
               <span class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#searchSub" aria-expanded="false" aria-controls="searchSub">
@@ -45,30 +75,25 @@
                 </li>
               </ul>
             </div>
-            <div v-else class="multi-level collapse" id="searchSub">
-              <ul class="flex-column nav">
-                <li class="nav-item" >
-                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
-                  <RouterLink :to="{name:'products'}" class="nav-link">
-                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'building']"/></span>
-                    <span class="sidebar-text"> 전체 상품 목록</span>
-                  </RouterLink>
-                </li>
-                <li class="nav-item" >
-                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
-                  <RouterLink :to="{name:'profile', params:{'userId' : store.currentUserData.id}}" class="nav-link">
-                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'user']"/></span>
-                    <span class="sidebar-text"> 마이 페이지</span>
-                  </RouterLink>
-                </li>
-                <li class="nav-item" >
-                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
-                  <span class="nav-link">
-                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'right-to-bracket']"/></span>
-                    <span @click.prevent="store.logout" class="sidebar-text"> 로그아웃</span>
-                  </span>
-                </li>
-              </ul>
+            <div v-else>
+              <div class="multi-level collapse" id="searchSub">
+                <ul class="flex-column nav">
+                  <li class="nav-item" >
+                    <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                    <RouterLink :to="{name:'profile', params:{'userId' : store.currentUserData.id}}" class="nav-link">
+                      <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'user']"/></span>
+                      <span class="sidebar-text"> 마이 페이지</span>
+                    </RouterLink>
+                  </li>
+                  <li class="nav-item" >
+                    <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                    <span class="nav-link">
+                      <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'right-to-bracket']"/></span>
+                      <span @click.prevent="store.logout" class="sidebar-text"> 로그아웃</span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </li>
           <!-- <li class="nav-item mb-2 mt-2">

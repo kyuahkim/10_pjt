@@ -1,18 +1,59 @@
 <template>
   <div>
-    <h1>Data from API</h1>
-    <p>{{ data }}</p>
-    <!-- <pre>{{ data }}</pre> -->
+    <h1>환율 정보</h1>
+    <hr>
+    <div>
+      <h3>외화로 환전</h3>
+      <p>한화 ⇒ 외화</p>
+      <select name="외화" id="foreign" v-model="selectedForeign"> <!-- 수정된 부분 -->
+        <option value="" selected>--------국가/통화 선택--------</option>
+        <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
+          {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
+        </option>
+      </select>
+      <br><br>
+      <p>
+        한화 : <input type="text" id="beforeWon" v-model.trim="beforeWon">
+      </p>
+      <p v-if="selectedExchange">
+        {{ selectedExchange.cur_nm }} : {{ calculateToForeign() }}
+      </p>
+    </div>
+    <hr>
+    <div>
+      <h3>한화로 환전</h3>
+      <p>외화 ⇒ 한화</p>
+      <select name="외화" id="foreignToWon" v-model="selectedForeignToWon"> <!-- 수정된 부분 -->
+        <option value="" selected>--------국가/통화 선택--------</option>
+        <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
+          {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
+        </option>
+      </select>
+      <br><br>
+      <p>
+        외화 : <input type="text" id="beforeForeign" v-model.trim="beforeForeign">
+      </p>
+      <p v-if="selectedExchangeToWon">
+        한화 : {{ calculateToWon() }} (원)
+      </p>
+    </div>
+    <hr>
   </div>
 </template>
   
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   data() {
     return {
-      data: null,
+      exchanges: null,
+      selectedForeign: '',
+      selectedForeignToWon: '',
+      selectedExchange: null,
+      selectedExchangeToWon: null,
+      beforeWon: 0,
+      beforeForeign: 0,
     };
   },
   mounted() {
@@ -21,14 +62,38 @@ export default {
   methods: {
     async get_exchange_rate() {
       try {
-        const response = await axios.get('http://localhost:8000/api/get_exchange_rate/');
-        this.data = response.data;
+        const response = await axios.get('http://localhost:8000/api/get_exchange_rate/')
+        this.exchanges = response.data;
       } catch (error) {
-        console.error('Error get exchange rate data:', error);
+        console.error('Error getting exchange rate data:', error)
       }
     },
+    calculateToForeign() {
+      if (!this.beforeWon || !this.selectedExchange || !this.selectedExchange.tts) {
+        return 'Invalid Input'
+      }
+      const tts = parseFloat(this.selectedExchange.tts.replace(/,/g, ''))
+      const result = parseFloat(this.beforeWon) / tts;
+      return result.toFixed(2)
+    },
+    calculateToWon() {
+      if (!this.beforeForeign || !this.selectedExchangeToWon || !this.selectedExchangeToWon.ttb) {
+        return 'Invalid Input'
+      }
+      const ttb = parseFloat(this.selectedExchangeToWon.ttb.replace(/,/g, ''))
+      const result = parseFloat(this.beforeForeign) * ttb
+      return result.toFixed(0)
+    }
   },
-};
+  watch: {
+    selectedForeign(newValue) {
+      this.selectedExchange = this.exchanges.find(exchange => exchange.cur_unit === newValue);
+    },
+    selectedForeignToWon(newValue) {
+      this.selectedExchangeToWon = this.exchanges.find(exchange => exchange.cur_unit === newValue);
+    },
+  },
+}
 </script>
 
 
@@ -42,4 +107,3 @@ pre {
   overflow: auto;           /* Enable scrolling if content overflows */
 }
 </style>
-  

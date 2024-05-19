@@ -87,14 +87,13 @@ def get_exchange_rate(request):
     url ='https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
     params = {
         'authkey': EXCHANGE_RATE_API_KEY,
+        'searchdate': '20240517',
         'data':'AP01'
     }
     response = requests.get(url,params=params)
     try:
-        data = response.json()  # Assuming the API returns JSON data
-        print(response.json())
+        data = response.json()
     except ValueError:
-        print(22222222222222222222222222222)
         return JsonResponse({'error': 'Invalid JSON response'}, status=500)
     return JsonResponse(data, safe=False)
 
