@@ -45,6 +45,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts',
+    'articles',
     'products',
     'rest_framework',
     'rest_framework.authtoken',

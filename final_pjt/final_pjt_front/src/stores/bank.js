@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 
 export const useBankStore = defineStore('bank', () => {
   const products = ref([])
+  const articles = ref([])
   const token = ref(null)
   const id = ref(null)
   const currentUserData = ref({})
@@ -20,6 +21,40 @@ export const useBankStore = defineStore('bank', () => {
     .then((response) => {
       // console.log(response.data)
       products.value = response.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const getArticles = function () {
+    axios({
+      method: 'get',
+      url: `${API_URL}/articles/list/`,
+    })
+    .then((response) => {
+      // console.log(response.data)
+      articles.value = response.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const createArticle = function (payload) {
+    const { title, content } = payload
+    axios({
+      method: 'post',
+      url: `${API_URL}/articles/list/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      },
+      data: {
+        title, content,
+      }
+    })
+    .then((response) => {
+      router.push({ name: 'community' })
     })
     .catch((error) => {
       console.log(error)
@@ -143,7 +178,7 @@ export const useBankStore = defineStore('bank', () => {
       url: `${API_URL}/users/update-financial-products/`,
       headers: {
         Authorization: `Token ${token.value}`
-      },
+      }, 
       data: {
         financial_products: currentUserData.value.financial_products
       }
@@ -156,5 +191,34 @@ export const useBankStore = defineStore('bank', () => {
     })
   }
 
-  return { products, token, id, userdata, currentUserData, getProducts, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, updateUserFinancialProducts, }
+  const interestArticle = function (article, userId) {
+    if (article.like_users.includes(userId)) {
+      const Index = article.like_users.findIndex((id) => id === userId)
+      article.like_users.splice(Index, 1)
+    } else {
+      article.like_users.push(userId)
+    }
+    updateArticleLikeUsers(article)
+  }
+
+  const updateArticleLikeUsers = function (article) {
+    axios({
+      method: 'put',
+      url: `${API_URL}/articles/update_like_users/${article.id}/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      },
+      data: {
+        articleId: article.id
+      }
+    })
+    .then((response) =>{
+      console.log('좋아요 업데이트 성공')
+    })
+    .catch((error) => {
+      console.log('좋아요 업데이트 중 오류 발생: ' ,error)
+    })
+  }
+
+  return { products, articles, token, id, userdata, currentUserData, getProducts, getArticles, createArticle, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, updateUserFinancialProducts, interestArticle, updateArticleLikeUsers, }
 }, { persist : true})

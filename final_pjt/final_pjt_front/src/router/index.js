@@ -10,6 +10,8 @@ import exchangeRateView from '@/views/exchangeRateView.vue'
 import UpdateProfileView from '@/views/UpdateProfileView.vue'
 import MapView from '@/views/MapView.vue'
 import CommunityView from '@/views/CommunityView.vue'
+import ArticleDetailView from '@/views/ArticleDetailView.vue'
+import CreateArticleView from '@/views/CreateArticleView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +65,16 @@ const router = createRouter({
       path: '/community',
       name: 'community',
       component: CommunityView
+    },
+    {
+      path: '/articledetail/:articleId',
+      name: 'articledetail',
+      component: ArticleDetailView
+    },
+    {
+      path: '/createarticle',
+      name: 'createarticle',
+      component: CreateArticleView
     },
   ]
 })
