@@ -43,6 +43,13 @@
                     <span class="sidebar-text"> 주변 은행 검색</span>
                   </RouterLink>
                 </li>
+                <li class="nav-item" >
+                  <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                  <RouterLink :to="{name:'community'}" class="nav-link">
+                    <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'image']"/></span>
+                    <span class="sidebar-text"> 커뮤니티</span>
+                  </RouterLink>
+                </li>
               </ul>
             </div>
           </li>

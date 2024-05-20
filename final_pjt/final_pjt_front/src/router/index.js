@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { useBankStore } from '@/stores/bank'
-
 import HomeView from '@/views/HomeView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
@@ -11,6 +9,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import exchangeRateView from '@/views/exchangeRateView.vue'
 import UpdateProfileView from '@/views/UpdateProfileView.vue'
 import MapView from '@/views/MapView.vue'
+import CommunityView from '@/views/CommunityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +58,11 @@ const router = createRouter({
       path: '/map',
       name: 'map',
       component: MapView
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: CommunityView
     },
   ]
 })
