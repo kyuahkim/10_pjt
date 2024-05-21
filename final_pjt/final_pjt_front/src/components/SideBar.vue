@@ -165,6 +165,7 @@
 
 
 <script setup>
+
 import { RouterLink, RouterView } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
 import { onMounted } from 'vue'
@@ -180,6 +181,19 @@ onMounted(() => {
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang&family=Gowun+Dodum&family=Gugi&family=Jua&display=swap');
+
+body, html, template {
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   height: 100%;
+   box-sizing: border-box;
+   font-family: 'Black Han Sans', sans-serif;
+   font-weight: 400;
+   font-style: normal;
+   font-size: 18px;
+}
 .layout {
   display : flex;
 }
