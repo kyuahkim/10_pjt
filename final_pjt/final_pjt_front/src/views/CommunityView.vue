@@ -15,7 +15,7 @@
           :to="{ name: 'articledetail', params: { 'articleId': article.id }}">
           {{ article.title }}
         </RouterLink> | 좋아요 수 : {{ article.like_users.length }} | 
-        <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
+        <button @click.stop.prevent="store.interestArticle(article, currentUser.id)" class="btn">
           <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
           <span v-else>🤍</span>
         </button>

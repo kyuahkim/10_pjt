@@ -212,6 +212,7 @@ const updateComment = function (commentId) {
     content.value = ''
   })
   .catch((error) => {
+    alert("수정할 댓글을 입력해주세요.")
     console.log(error)
   })
 }
