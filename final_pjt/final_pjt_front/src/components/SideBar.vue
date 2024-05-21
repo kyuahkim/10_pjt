@@ -180,24 +180,16 @@ onMounted(() => {
 </script>
 
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang&family=Gowun+Dodum&family=Gugi&family=Jua&display=swap');
+<style>
+@import url("@/assets/styles/main.css");
 
-body, html, template {
-   margin: 0;
-   padding: 0;
-   width: 100%;
-   height: 100%;
-   box-sizing: border-box;
-   font-family: 'Black Han Sans', sans-serif;
-   font-weight: 400;
-   font-style: normal;
-   font-size: 18px;
-}
 .layout {
   display : flex;
 }
-
+#sidebarMenu{
+  font-family: "Song Myung", sans-serif;
+  
+}
 .sidebar {
   width: 250px;
   height: 100vh;

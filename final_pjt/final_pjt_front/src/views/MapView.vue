@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <h1>주변 은행 검색</h1>
     <hr>
     <div>
@@ -34,7 +34,104 @@
     <ul>
       <li v-for="place in places" :key="place.id">{{ place.place_name }}</li>
     </ul>
-  </div>
+  </div> -->
+
+
+  <h1>주변 은행 검색</h1>
+  <hr>
+
+  <main class="content">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="card border-light shadow-sm ">
+          <div class="card-body">
+            <!-- selectbar start  -->
+            <div class="d-flex justify-content-center mb-2" style="height:100px;">
+              <div class="row">
+                <div class="col align-self-center">
+                  <select name="city" id="city" v-model="city" class="form-select select" aria-label="시">
+                    <option value="empty" selected disabled>시/도</option>
+                    <option v-for="city of cities" :key="city" :value="city">{{ city }}</option>
+                  </select>
+                </div>
+                <div class="col align-self-center">
+                  <select name="area" id="area" v-model="selectedRegion" class="form-select select" aria-label="구">
+                    <option value="empty" selected disabled>시/군/구</option>
+                    <option v-for="region of regions" :key="region" :value="region">{{ region }}</option>
+                  </select>
+                </div>
+                <div class="col align-self-center">
+                  <select name="bankname" id="bankname" v-model="selectedBank" class="form-select select" aria-label="은행">
+                    <option value="empty" selected disabled>은행</option>
+                    <option v-for="bank of banks" :key="bank" :value="bank">{{ bank }}</option>
+                  </select>
+                </div>
+                <div class="col align-self-center">
+                  <!-- <input type="button" class="btn btn-secondary ml-3" value="검색"  @click="searchPlaces" :disabled="selectedDongCode == 'empty' || loadingCount != 0" /> -->
+                  <input type="button" class="btn btn-secondary ml-3" value="검색"  @click="searchPlaces" />
+                </div>
+                <!-- <div class="col align-self-center">
+                  <input
+                    type="button"
+                    :value="isBookmarked ? '관심 지역 해제' : '관심 지역 등록'"
+                    class="btn ml-3"
+                    :class="isBookmarked ? 'btn-warning' : 'btn-outline-warning'"
+                    @click="clickBookmarkArea"
+                    :disabled="selectedDongCode == 'empty'"
+                  />
+                </div> -->
+              </div>
+            </div>
+            <!-- selectbar end  -->
+            <!-- <div class="row m-1" style="height:550px;">
+              <div v-if="loadingCount != 0" class="d-flex align-items-center justify-content-center" style="height:100%;">
+                <ring-loader :loading="loadingCount != 0" color="#f3b773"></ring-loader>
+              </div>
+              <div v-else class="col-4" id="apartInfo">
+
+                <div>
+                  <div v-for="(house, index) in houseList" :key="index" class="border-light apart" :id="'apartInfo' + (index + 1)">
+                    <div class=" cust_box row p-3 pt-4 rounded" style=" margin-right:10px;">
+                      <div class="col-9 " @click="clickAptInfo(house)" style="cursor: pointer; padding-left:30px">
+                        <h5>{{ house.aptName }}</h5>
+                        <p class="m-0">거래금액: {{ house.dealAmount }}</p>
+                        <p class="m-0">전용면적: {{ house.area }}</p>
+                        <p class="m-0">등록일: {{ makeDateStr(house.dealYear, house.dealMonth, house.dealDay, '.') }}</p>
+                      </div>
+                      <div class="col-3 align-self-center" style="text-align: center;">
+                        <font-awesome-icon
+                          :icon="[house.bookmarked ? 'fas' : 'far', 'star']"
+                          @click="clickBookmark(house)"
+                          :id="'bookmarkStar' + (index + 1)"
+                          aria-hidden="true"
+                          style="color: rgb(255, 226, 95); font-size: 25px; cursor: pointer;"
+                          class=" scale-up-5"
+                        >
+                          <input type="hidden" value="' + dealNo + '" />
+                        </font-awesome-icon>
+                      </div>
+
+                      <div class="text-center rounded-bottom" @click="clickAptInfo(house)" style="cursor: pointer;">
+                        <h6 class="m-0 text-center text-white">move</h6>
+                      </div>
+                    </div>
+                    <hr style="margin-top:0px; margin-left:30px; margin-right:20px; margin-bottom:0px;" />
+                  </div>
+                  <hr style="margin-top:0px; margin-left:30px; margin-right:20px; margin-bottom:0px;" />
+                </div>
+
+                
+              </div>
+            </div> -->
+              <div id="map" class="col" style=" width:100%; height: 550px"></div>
+          </div>
+          <!-- <div class="mt-4" v-if="loadingCount == 0">
+            <pagination :listRowCount="listRowCount" :pageLinkCount="pageLinkCount" :currentPageIndex="currentPageIndex" :houseListcount="houseListCount" @call-parent="movePage"></pagination>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script setup>
