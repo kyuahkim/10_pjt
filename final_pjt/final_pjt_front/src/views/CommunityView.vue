@@ -31,22 +31,16 @@
 <script setup>
 import { RouterView, RouterLink } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, } from 'vue'
 
 const store = useBankStore()
 const currentUser = store.currentUserData
 const articles = ref([])
 
-onMounted(() => {
-  store.getArticles()
-  articles.value = store.articles
-  console.log(articles.value)
-})
-
+store.getArticles()
+articles.value = store.articles
 </script>
 
+
 <style scoped>
-.article {
-  margin-bottom: 20px;
-}
 </style>

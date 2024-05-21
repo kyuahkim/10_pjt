@@ -14,7 +14,8 @@
       <div>
         <label for="content">내용</label>
         <br>
-        <input type="text" id="content" v-model.trim="content" style="width: 500px; height: 500px;">
+        <textarea id="content" v-model.trim="content" style="width: 500px; height: 500px;">
+        </textarea>
       </div>
       <hr>
       <input type="submit" value="게시글 등록">

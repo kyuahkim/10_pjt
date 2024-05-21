@@ -220,5 +220,8 @@ export const useBankStore = defineStore('bank', () => {
     })
   }
 
-  return { products, articles, token, id, userdata, currentUserData, getProducts, getArticles, createArticle, getUserInfo, getCurrentUser, signup, login, logout, isLogin, interest, updateUserFinancialProducts, interestArticle, updateArticleLikeUsers, }
+  return { products, articles, token, id, userdata, currentUserData, isLogin,
+    getProducts, getArticles, createArticle,
+    getUserInfo, getCurrentUser, signup, login, logout,
+    interest, updateUserFinancialProducts, interestArticle, updateArticleLikeUsers, }
 }, { persist : true})

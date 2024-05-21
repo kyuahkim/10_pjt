@@ -25,7 +25,6 @@
 
 
 <script setup>
-import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
 
