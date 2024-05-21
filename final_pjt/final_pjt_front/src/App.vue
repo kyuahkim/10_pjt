@@ -15,4 +15,5 @@ const store = useBankStore()
 
 <style scoped>
 @import './assets/css/volt.css';
+
 </style>
