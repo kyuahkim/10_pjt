@@ -6,15 +6,17 @@
   <div>
     <form @submit.prevent="createArticle">
       <div>
-        <label for="title">제목 : </label>
+        <label for="title">제목</label>
+        <br>
         <input type="text" id="title" v-model.trim="title">
       </div>
-      <br>
+      <hr>
       <div>
-        <label for="content">내용 : </label>
-        <input type="text" id="content" v-model.trim="content">
+        <label for="content">내용</label>
+        <br>
+        <input type="text" id="content" v-model.trim="content" style="width: 500px; height: 500px;">
       </div>
-      <br>
+      <hr>
       <input type="submit" value="게시글 등록">
     </form>
   </div>
