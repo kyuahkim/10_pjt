@@ -39,8 +39,6 @@
 
   <h1>주변 은행 검색</h1>
   <hr>
-
-  <main class="content">
     <div class="row">
       <div class="col-12 mb-4">
         <div class="card border-light shadow-sm ">
@@ -131,7 +129,6 @@
         </div>
       </div>
     </div>
-  </main>
 </template>
 
 <script setup>
