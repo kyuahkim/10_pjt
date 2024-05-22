@@ -12,7 +12,7 @@ import MapView from '@/views/MapView.vue'
 import CommunityView from '@/views/CommunityView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import CreateArticleView from '@/views/CreateArticleView.vue'
-
+import JoinProductsView from '@/views/JoinProductsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -76,6 +76,11 @@ const router = createRouter({
       name: 'createarticle',
       component: CreateArticleView
     },
+    {
+      path:'/joinproducts',
+      name:'joinproducts',
+      component:JoinProductsView,
+    }
   ]
 })
 

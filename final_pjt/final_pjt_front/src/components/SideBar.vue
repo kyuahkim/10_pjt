@@ -94,6 +94,13 @@
                   </li>
                   <li class="nav-item" >
                     <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
+                    <RouterLink :to="{name:'joinproducts'}" class="nav-link">
+                      <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'table']" /></span>
+                      <span class="sidebar-text"> 구독한 상품 정보</span>
+                    </RouterLink>
+                  </li>
+                  <li class="nav-item" >
+                    <!-- :class="{ active: $store.state.curPage == 'searchApt' }" -->
                     <span class="nav-link">
                       <span class="sidebar-icon"><font-awesome-icon :icon="['fas', 'right-to-bracket']"/></span>
                       <span @click.prevent="store.logout" class="sidebar-text"> 로그아웃</span>
