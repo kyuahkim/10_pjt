@@ -3,8 +3,6 @@
     <h1>개인 정보 상세/수정/탈퇴 페이지</h1>
     <hr>
     <h4>{{ store.currentUserData.username }}님의 정보입니다.</h4>
-
-  <main class="content">
     <div class="main bg-light p-4">
       <div class="row">
         <div class="col-12 col-xl-8">
@@ -56,7 +54,7 @@
                <div class="row">
                 <div class="col-md-12 mb-3">
                   <div class="form-group">
-                    <label for="password">Password 수정 넣어야 하나?!</label>
+                    <label for="password">Password</label>
                     <input
                       v-model="updatedUserData.password"
                       class="form-control"
@@ -111,20 +109,7 @@
               </div>
               <hr>
               <div>
-              <p>관심 상품 번호</p>
-              <ul v-if="productsNumbers.length">
-                <li v-for="number of productsNumbers">
-                  <RouterLink :to="{ name: 'detail', params:{ id: number } }">
-                    {{ number }}
-                  </RouterLink>
-                </li>
-              </ul>
-              <ul v-else>
-                <br>
-                관심 상품을 등록해주세요.
-              </ul>
             </div>
-
               <div class="row mb-3 mt-3">
                 <div class="col">
                   <div class="form-group">
@@ -228,9 +213,7 @@
         </div> -->
       </div>
     </div>
-
     <!-- <secession-modal v-on:call-parent-secession-close="closeAfterSecession"></secession-modal> -->
-  </main>
 </template>
 
 
