@@ -6,43 +6,41 @@
     <button @click.prevent="deleteArticle(article.id)">
       게시물 삭제
     </button>
+    <button @click.prevent="editArticle">게시물 수정</button>
   </div>
   <hr>
   <div>
-    <div >
-      <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
-      <span style="display: inline-block; margin-left: 20px;">
-        <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
-          <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
-          <span v-else>🤍</span>
-        </button>
-      </span>
-    </div>
-    <hr>
-    <h4>제목</h4>
-    <p>{{ article.title }}</p>
-    <hr>
-    <h4>작성자</h4>
-    <p>{{ writer.nickname }}</p>
-    <hr>
-    <h4>내용</h4>
-    <p>{{ article.content }}</p>
+      <div >
+        <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
+        <span style="display: inline-block; margin-left: 20px;">
+          <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
+            <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
+            <span v-else>🤍</span>
+          </button>
+        </span>
+      </div>
+      <hr>
+        <div v-if="editFlag">
+        <h4>제목 수정</h4>
+        <input type="text" v-model="updatedTitle" />
+        <h4>내용 수정</h4>
+        <textarea v-model="updatedContent"></textarea>
+        <button @click.prevent="updateArticle(article.id)">저장</button>
+        <button @click.prevent="cancelEdit">취소</button>
+        </div>
+        <div v-else>
+          <h4>제목</h4>
+          <p>{{ updatedTitle }}</p>
+          <h4>내용</h4>
+          <p>{{ updatedContent }}</p>
+        </div>
+
   </div>
   <hr>
   <RouterLink :to="{name:'community'}">게시물 목록 돌아가기</RouterLink>
   <hr>
-  <div>
-    {{ article }}
-  </div>
-  <hr>
-  <div>
-    {{ writer }}
-  </div>
-  <hr>
-  <div>
-    {{ currentUser }}
-  </div>
-  <hr>
+  
+  
   <div>
     <h4>댓글</h4>
     <ul v-if="comments.length">
@@ -99,19 +97,32 @@ const router = useRouter()
 const store = useBankStore()
 const articleId = parseInt(route.params.articleId)
 
-const article = store.articles.find((element) => element.id === articleId)
-const writer = store.userdata.find((element) => element.id === article.user)
+const article = ref({})
+const writer = ref({})
+
+article.value = store.articles.find((element) => element.id === articleId)
+writer.value = store.userdata.find((element) => element.id === article.user)
 const currentUser = store.currentUserData
+const editFlag = ref(false)
+const updatedTitle = ref('')
+updatedTitle.value = article.value.title
+const updatedContent = ref('')
+updatedContent.value = article.value.content
 
 const comments = ref([])
 const content = ref(null)
 const check = ref(0)
 
+
+onMounted(async () => {
+  store.getArticles()
+  getComments()
+})
 const deleteArticle = function (articleId) {
   const article = store.articles.find((element) => element.id === articleId)
   axios({
     method:'delete',
-    url: `http://127.0.0.1:8000/articles/delete_article/${article.id}`,
+    url: `http://127.0.0.1:8000/articles/delete_article/${article.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
@@ -127,15 +138,49 @@ const deleteArticle = function (articleId) {
   })
 }
 
+const updateArticle = function (articleId){
+  const article_local = store.articles.find((element) => element.id === articleId)
+  axios({
+    method:'put',
+    url: `http://127.0.0.1:8000/articles/article_update/${article_local.id}/`,
+    headers:{
+      Authorization: `Token ${store.token}`
+    },
+    data:{
+      title:updatedTitle.value,
+      content:updatedContent.value,
+    }
+  })
+  .then((response)=>{
+    console.log(response)
+    editFlag.value = false
+    store.getArticles()
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+}
+
+const editArticle = function () {
+  editFlag.value = true
+  updatedTitle.value = article.title
+  updatedContent.value = article.content
+}
+
+const cancelEdit = function () {
+  editFlag.value = false
+}
+
 const getComments = function () {
   axios({
     method:'get',
-    url: `http://127.0.0.1:8000/articles/${article.id}/comment/`,
+    url: `http://127.0.0.1:8000/articles/${article.value.id}/comment/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
     data: {
-      articleId: article.id
+      articleId: article.value.id,
+      
     }
   })
   .then((response) => {
@@ -171,13 +216,13 @@ const deleteComment = function (commentId) {
 const createComment = function () {
   axios({
     method: 'post',
-    url: `http://127.0.0.1:8000/articles/${article.id}/comment/`,
+    url: `http://127.0.0.1:8000/articles/${article.value.id}/comment/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
     data: {
       content: content.value,
-      articleId: article.id
+      articleId: article.value.id
     }
   })
   .then((response) => {
@@ -217,10 +262,6 @@ const updateComment = function (commentId) {
   })
 }
 
-onMounted(() => {
-  store.getArticles()
-  getComments()
-})
 </script>
 
 

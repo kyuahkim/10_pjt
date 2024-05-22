@@ -20,6 +20,18 @@ def article_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT','DELETE'])
+@permission_classes([IsAuthenticated])
+def article_update(request,articleId):
+    article = get_object_or_404(Article, pk=articleId)
+    if request.method == "DELETE" :
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    elif request.method == "PUT" :
+        serializer = ArticleSerializer(article, data=request.data)
+        if serializer.is_valid(raise_exception=True) :
+            serializer.save()
+            return Response(serializer.data)
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
@@ -53,9 +65,7 @@ def comment(request, articleId) :
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article, user=request.user)
-            print(1111111111111111111111)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print(2222222222222222222222)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

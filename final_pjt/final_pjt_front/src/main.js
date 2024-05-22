@@ -38,6 +38,7 @@ import {
   faSignInAlt,
   faUserPlus,
   faSignature,
+  faTable,
 } from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
@@ -70,7 +71,8 @@ library.add(
   faInfoCircle,
   faSignInAlt,
   faUserPlus,
-  faSignature
+  faSignature,
+  faTable
 )
 
 const app = createApp(App)
