@@ -39,7 +39,7 @@
                               <label for="password1">비밀번호 확인</label>
                               <div class="input-group">
                                 <span class="input-group-text" id="basic-addon2"><font-awesome-icon :icon="['fas', 'key']"/></span>
-                                <input type="password" placeholder="Password confirm" class="form-control" id="password1" v-model.trim="password1" required>
+                                <input type="password" placeholder="Password confirm" class="form-control" id="password2" v-model.trim="password2" required>
                               </div>  
                             </div>
                           </div>

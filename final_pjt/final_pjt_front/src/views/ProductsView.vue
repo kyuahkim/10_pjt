@@ -1,20 +1,23 @@
 <template>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
-    <main class="content">
-      <div class="row ">
-        <div class="col-12 mb-4">
-          <div class="card border-light shadow-sm ">
-            <div class="card-body">
-              <h1>전체 상품 목록</h1>
-              <div  class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
-                  <!-- searchbar start  -->
-                <!-- <div class="d-flex justify-content-center mb-2" style=" height:100px;">
-                  <div class="row">
-                    <div class="col align-self-center">
-                      <input type="text" v-model="$store.state.board.searchWord" @keydown.enter="boardList" placeholder="검색어를 입력하세요" class="form-control" id="searchText" style="width:400px;" />
-                    </div>
-                    <div class="col align-self-center">
-                      <button @click="boardList" class="btn btn-secondary" type="button">Search</button> </div>
+<h1>전체 상품 목록</h1>
+<hr>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
+<!-- <div class="bg-light"> -->
+
+
+  <main class="content">
+    <div class="row ">
+      <div class="col-12 mb-4">
+        <div class="card border-light shadow-sm ">
+          <div class="card-body">
+            
+            
+            <div  class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
+                <!-- searchbar start  -->
+              <!-- <div class="d-flex justify-content-center mb-2" style=" height:100px;">
+                <div class="row">
+                  <div class="col align-self-center">
+                    <input type="text" v-model="$store.state.board.searchWord" @keydown.enter="boardList" placeholder="검색어를 입력하세요" class="form-control" id="searchText" style="width:400px;" />
                   </div>
                 </div> -->
                 <!-- <div class="row"  style="float:right; margin-right:20px;">
