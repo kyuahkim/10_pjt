@@ -19,7 +19,6 @@ export const useBankStore = defineStore('bank', () => {
       url: `${API_URL}/api/products/`,
     })
     .then((response) => {
-      // console.log(response.data)
       products.value = response.data
     })
     .catch((error) => {
