@@ -2,7 +2,7 @@
   <h1>전체 상품 목록</h1>
   <hr>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
-  <!-- <div class="bg-light"> -->
+    <!-- <div class="bg-light"> -->
     <div class="row ">
       <div class="col-12 mb-4">
         <div class="card border-light shadow-sm ">

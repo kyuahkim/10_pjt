@@ -2,7 +2,6 @@
   <h1>가입한 상품 목록</h1>
   <hr>
 
-  <main class="content">
     <div class="row ">
       <div class="col-12 mb-4">
         <div class="card border-light shadow-sm ">
@@ -35,7 +34,9 @@
           </div>
         </div>
       </div>
-    </main>
+
+      {{ productOptions }}
+      <!-- intr_rate : 저축금리, intr_rate2 : 최고우대금리 -->
 
   
 </template>
@@ -50,24 +51,27 @@ const route = useRoute()
 const router = useRouter()
 const store = useBankStore()
 const productsNumbers = ref([])
+const productOptions = ref([])
 
 const userId = ref(route.params.userId)
 
 const getProductById = (id) => store.products.find(product => product.id === id)
-const productOptions = ref({})
 const type = ref(0)
 
-const fetchProductOptions = (product) => {
+const fetchProductOptions = () => {
   axios({
     method: 'get',
-    url: `http://127.0.0.1:8000/api/deposit-products-options/${product.fin_prdt_cd}/`,
+    url: `http://127.0.0.1:8000/api/user_join_options/`,
     headers: {
       Authorization: `Token ${store.token}`
+    },
+    data:{
+      join_products:store.currentUserData.join_products,
     }
   })
     .then(response => {
+      console.log(response)
       productOptions.value = response.data
-      type.value = productOptions.value[0].id
     })
     .catch(error => {
       console.error('Error fetching product options:', error)
@@ -77,7 +81,7 @@ onMounted(() => {
   store.getUserInfo()
   store.getCurrentUser()
   productsNumbers.value = store.currentUserData.financial_products
-  // fetchProductOptions(product)
+  fetchProductOptions()
 })
 console.log(store.currentUserData)
 </script>

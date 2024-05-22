@@ -202,6 +202,13 @@ def deposit_products_options(request, fin_prdt_cd):
     serializer = DepositOptionsSerializer(options, many=True)
     return Response(serializer.data)
 
+# 유저가 가입한 상품 조회
+@api_view(["GET"])
+def user_join_options(request):
+    join_products = request.user.join_products.all()
+    serializer = DepositOptionsSerializer(join_products,many=True)
+    return Response(serializer.data)
+
 
 # # 가입 기간에 상관없이 금리가 가장 높은 상품과 해당 상품의 옵션 리스트 출력 
 # @api_view(["GET"])

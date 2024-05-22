@@ -10,6 +10,7 @@ urlpatterns = [
     path('save-deposit-products/', views.save_deposit_products, name="save_deposit_products"),
     path('save-saving-products/', views.save_saving_products, name="save_saving_products"),
     path('get_exchange_rate/',views.get_exchange_rate, name="get_exchange_rate"),
+    path('user_join_options/',views.user_join_options, name="user_join_options"),
     path('deposit-products-options/<str:fin_prdt_cd>/', views.deposit_products_options, name="deposit_products_options"),
     path('',include(router.urls)),
 ]
