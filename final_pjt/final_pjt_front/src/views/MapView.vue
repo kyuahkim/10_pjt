@@ -1,42 +1,4 @@
 <template>
-  <!-- <div>
-    <h1>주변 은행 검색</h1>
-    <hr>
-    <div>
-      <h4>시/도 선택</h4>
-      <select name="city" id="city" v-model="city">
-        <option value="" selected>--------시/도 선택--------</option>
-        <option v-for="city of cities" :key="city" :value="city">{{ city }}</option>
-      </select>
-    </div>
-    <br>
-    <div>
-      <h4>시/군/구 선택</h4>
-      <select name="area" id="area" v-model="selectedRegion">
-        <option value="" selected>--------시/군/구 선택--------</option>
-        <option v-for="region of regions" :key="region" :value="region">{{ region }}</option>
-      </select>
-    </div>
-    <br>
-    <div>
-      <h4>은행 이름 선택</h4>
-      <select name="bankname" id="bankname" v-model="selectedBank">
-        <option value="" selected>--------은행명 선택--------</option>
-        <option v-for="bank of banks" :key="bank" :value="bank">{{ bank }}</option>
-      </select>
-    </div>
-    <br>
-    <button @click="searchPlaces">Search</button>
-    <hr>
-    <div id="map" style="width: 100%; height: 400px"></div>
-    <hr>
-    <h4>주변 은행 목록</h4>
-    <ul>
-      <li v-for="place in places" :key="place.id">{{ place.place_name }}</li>
-    </ul>
-  </div> -->
-
-
   <h1>주변 은행 검색</h1>
   <hr>
 
@@ -50,19 +12,19 @@
               <div class="row">
                 <div class="col align-self-center">
                   <select name="city" id="city" v-model="city" class="form-select select" aria-label="시">
-                    <option value="empty" selected disabled>시/도</option>
+                    <option value="" selected disabled>시/도</option>
                     <option v-for="city of cities" :key="city" :value="city">{{ city }}</option>
                   </select>
                 </div>
                 <div class="col align-self-center">
                   <select name="area" id="area" v-model="selectedRegion" class="form-select select" aria-label="구">
-                    <option value="empty" selected disabled>시/군/구</option>
+                    <option value="" selected disabled>시/군/구</option>
                     <option v-for="region of regions" :key="region" :value="region">{{ region }}</option>
                   </select>
                 </div>
                 <div class="col align-self-center">
                   <select name="bankname" id="bankname" v-model="selectedBank" class="form-select select" aria-label="은행">
-                    <option value="empty" selected disabled>은행</option>
+                    <option value="" selected disabled>은행</option>
                     <option v-for="bank of banks" :key="bank" :value="bank">{{ bank }}</option>
                   </select>
                 </div>
@@ -119,15 +81,10 @@
                   </div>
                   <hr style="margin-top:0px; margin-left:30px; margin-right:20px; margin-bottom:0px;" />
                 </div>
-
-                
               </div>
             </div> -->
               <div id="map" class="col" style=" width:100%; height: 550px"></div>
           </div>
-          <!-- <div class="mt-4" v-if="loadingCount == 0">
-            <pagination :listRowCount="listRowCount" :pageLinkCount="pageLinkCount" :currentPageIndex="currentPageIndex" :houseListcount="houseListCount" @call-parent="movePage"></pagination>
-          </div> -->
         </div>
       </div>
     </div>
