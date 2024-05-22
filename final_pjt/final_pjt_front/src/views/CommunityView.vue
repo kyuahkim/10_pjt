@@ -10,7 +10,7 @@
   <hr>
   <div>
     <ul v-if="articles.length">
-      <li v-for="article of articles">
+      <li v-for="article of articles" :key="article.id">
         <RouterLink
           :to="{ name: 'articledetail', params: { 'articleId': article.id }}">
           {{ article.title }}
@@ -29,16 +29,29 @@
 </template>
 
 <script setup>
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView, RouterLink, } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
-import { onMounted, ref, } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import axios from 'axios'
 
 const store = useBankStore()
+store.getProducts()
 const currentUser = store.currentUserData
 const articles = ref([])
+const comments = ref([])
 
-store.getArticles()
-articles.value = store.articles
+const fetchArticles = () => {
+  store.getArticles()
+  articles.value = store.articles
+}
+
+onMounted(() => {
+  fetchArticles()
+})
+
+watchEffect(() => {
+  articles.value = store.articles
+})
 </script>
 
 
