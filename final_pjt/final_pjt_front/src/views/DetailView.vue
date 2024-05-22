@@ -37,6 +37,10 @@
       <p>저축 기간 [단위: 개월] : {{ productOption.save_trm }}</p>
       <p>저축 금리 [소수점 2자리] : {{ productOption.intr_rate }}</p>
       <p>최고 우대 금리 [소수점 2자리] : {{ productOption.intr_rate2 }}</p>
+      <button @click.prevent="store.joinProduct(productOption.id)" class="btn">
+        <span v-if="store.currentUserData.join_products.includes(productOption.id)">가입 취소하기</span>
+        <span v-else>가입하기</span>
+      </button>
       <hr>
     </div>
   </div>

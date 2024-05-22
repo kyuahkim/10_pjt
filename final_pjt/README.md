@@ -46,6 +46,7 @@
     * 댓글 생성 -> 완료
     * 댓글 삭제 -> 완료
     * 게시물 삭제
+* 개인이 가입한 상품 -> 완료
 * 좋아요가 그때그때 갱신되지 않는 문제점
     * ArticleDetail -> community | 없데이트가 됨 (해결)
     * community -> ArticleDetail | (해결안됨)

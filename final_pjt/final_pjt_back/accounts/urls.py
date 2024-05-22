@@ -11,5 +11,6 @@ urlpatterns = [
     path('current-user/', views.current_user, name='current_user'),
     path('update-financial-products/', views.update_financial_products, name='update_financial_products'),
     path('delete-user/', views.delete_user, name='delete_user'),
+    path('update_join_products/', views.update_join_products, name='update_join_products'),
     path('',include(router.urls)),
 ]
