@@ -19,55 +19,49 @@
                   <div class="col align-self-center">
                     <input type="text" v-model="$store.state.board.searchWord" @keydown.enter="boardList" placeholder="검색어를 입력하세요" class="form-control" id="searchText" style="width:400px;" />
                   </div>
-                  <div class="col align-self-center">
-                    <button @click="boardList" class="btn btn-secondary" type="button">Search</button> </div>
-                </div>
-              </div> -->
-              <!-- <div class="row"  style="float:right; margin-right:20px;">
-              <button class="btn mb-3 btn-secondary btn-rounded"
-                data-mdb-ripple-color="dark" @click="showInsertModal">글쓰기</button></div> -->
-              <table class="table table-hover text-center">
-                <thead class="bg-primary text-white">
-                  <tr>
-                    <th class="border-gray-200">은행명</th>
-                    <th class="border-gray-200" style="width:700px;">상품명</th>
-                    <th class="border-gray-200">관심 상품</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <!-- <tr v-for="(board, index) in listGetters" @click="boardDetail(board.boardId)" v-bind:key="index"> -->
-                  <tr v-for="product in products" :key="product.id" @click="goToDetail(product.id)">
-                    <td>{{ product.id }}</td>
-                    <td>
-                      {{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</td>
-                    <td><button @click.stop.prevent="store.interest(product.id)" class="btn">
-                      <span v-if="store.currentUserData.financial_products.includes(product.id)">❤️</span>
-                      <span v-else>🤍</span>
-                    </button></td>
-                  </tr>
-                </tbody>
-              </table>
+                </div> -->
+                <!-- <div class="row"  style="float:right; margin-right:20px;">
+                <button class="btn mb-3 btn-secondary btn-rounded"
+                  data-mdb-ripple-color="dark" @click="showInsertModal">글쓰기</button></div> -->
+                <table class="table table-hover text-center">
+                  <thead class="bg-primary text-white">
+                    <tr>
+                      <th class="border-gray-200">은행명</th>
+                      <th class="border-gray-200" style="width:700px;">상품명</th>
+                      <th class="border-gray-200">관심 상품</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <tr v-for="(board, index) in listGetters" @click="boardDetail(board.boardId)" v-bind:key="index"> -->
+                    <tr v-for="product in products" :key="product.id" @click="goToDetail(product.id)">
+                      <td>{{ product.id }}</td>
+                      <td>
+                        {{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</td>
+                      <td>
+                        <button @click.stop.prevent="store.interest(product.id)" class="btn">
+                          <span v-if="store.currentUserData.financial_products.includes(product.id)">❤️</span>
+                          <span v-else>🤍</span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <pagination v-on:call-parent="movePage"></pagination> -->
+              <!-- <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
+              <detail-modal v-on:call-parent-change-to-update="changeToUpdate" v-on:call-parent-change-to-delete="changeToDelete"></detail-modal>
+              <update-modal v-on:call-parent-update="closeAfterUpdate"></update-modal> -->
             </div>
-            <!-- <pagination v-on:call-parent="movePage"></pagination> -->
-
-            
-
-            <!-- <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
-            <detail-modal v-on:call-parent-change-to-update="changeToUpdate" v-on:call-parent-change-to-delete="changeToDelete"></detail-modal>
-            <update-modal v-on:call-parent-update="closeAfterUpdate"></update-modal> -->
           </div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 </template>
 
 
 <script setup>
-import { ref } from 'vue'
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
 
 const store = useBankStore()
@@ -85,4 +79,9 @@ const goToDetail = function (id){
 thead{
   color : blue
 }
+
+table {
+  cursor: pointer;
+}
+
 </style>
