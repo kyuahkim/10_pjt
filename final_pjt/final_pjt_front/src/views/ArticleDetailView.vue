@@ -104,7 +104,7 @@ const article = ref({})
 const writer = ref({})
 
 article.value = store.articles.find((element) => element.id === articleId)
-writer.value = store.userdata.find((element) => element.id === article.user)
+writer.value = store.userdata.find((element) => element.id === article.value.user)
 const currentUser = store.currentUserData
 const editFlag = ref(false)
 const updatedTitle = ref('')
