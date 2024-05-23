@@ -1,11 +1,11 @@
 <template>
   <h1>전체 상품 목록</h1>
   <hr>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
+  <div class=" justify-content-center flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
     <div class="row">
-      <div class="col-12">
-        <h6 style="margin-left: 80px;">필터링 정보</h6>
-        <div class="row" style="margin-left: 60px;">
+      <div class="box col-12">
+        <h6>필터링 정보</h6>
+        <div class="row">
           <div class="col align-self-center">
             <select name="bankname" id="bankname" v-model="selectBank" class="form-select select" aria-label="은행 이름">
               <option value="선택 없음" selected disabled>은행 이름</option>
@@ -26,8 +26,8 @@
           </div> -->
         </div>
         <br>
-        <div class="card border-light shadow-sm">
-          <div class="card-body" style="width: 100%;">
+        <div class="card border-light ">
+          <div class="card-body mr-4" style="width: 100%;">
             <div class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
               <table class="table table-hover text-center">
                 <thead class="bg-primary text-white">
@@ -103,7 +103,10 @@ table {
   justify-content: center;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-left: 70px; /* 카드 자체를 가운데로 정렬 */
+}
+
+.box {
+  padding: 20px 50px;
 }
 
 .card-content {

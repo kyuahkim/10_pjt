@@ -16,9 +16,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="product in products" :key="product.id" @click="goToDetail(product.id)">
-                    <td>{{ product.kor_co_nm }}</td>
-                    <td>{{ product.fin_prdt_nm }}</td>
+                  <tr v-for="productname in productnames" :key="productname.id" @click="goToDetail(productname.id)">
+                    <td>{{ productname.kor_co_nm }}</td>
+                    <td>{{ productname.fin_prdt_nm }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -34,15 +34,15 @@
   </div>
   <br>
   <br>
-  <h1>가입한 상품 금리를 한번에 모아보세요</h1>
+  <h1>가입한 상품 금리를 한번에 모아서 보세요</h1>
   <hr>
   <div v-if="chartData">
     <div class="row justify-content-center">
-      <div class="col-12 mx-4">
+      <Bar :data="chartData" :options="chartOptions" />
+      <!-- <div class="col-12 mx-4">
         <div class="chart-container">
-          <Bar :data="chartData" :options="chartOptions" />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@
 
 import { onMounted, ref, watch } from 'vue'
 import { useBankStore } from '@/stores/bank'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { Bar } from 'vue-chartjs'
 import {
@@ -67,14 +67,17 @@ import {
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const route = useRoute()
+const router = useRouter()
 const store = useBankStore()
 const productOptions = ref([])
-const products = ref([])
+const products = store.products
+const productnames = ref([])
 
 const userId = ref(route.params.userId)
 
 const getProductsByOptions = () => {
   const productIds = productOptions.value.map(option => option.product)
+  console.log(productOptions.value)
   return store.products.filter(product => productIds.includes(product.id))
 }
 
@@ -156,8 +159,14 @@ const chartOptions = ref({
 
 const loadChartData = () => {
   const productIds = productOptions.value.map(option => option.product)
-  const products = store.products.filter(product => productIds.includes(product.id))
-  const labels = products.map(product=>product.fin_prdt_nm)
+  productnames.value = store.products.filter(product => productIds.includes(product.id))
+  console.log(productIds)
+  const labels = ref([])
+  for (const productId of productIds) {
+    const product = products.value.find((element) => element.id === productId)
+    labels.value.push(product.fin_prdt_nm)
+  }
+  
   // label로 product name을 선택
   const intrRates = productOptions.value.map(option => option.intr_rate)
   const intrRates2 = productOptions.value.map(option => option.intr_rate2)
@@ -169,7 +178,7 @@ const loadChartData = () => {
   const averageRates2Array = Array(intrRates2.length).fill(averageRate2)
 
   chartData.value = {
-    labels: labels,
+    labels: labels.value,
     datasets: [
       {
         label: '저축금리',
@@ -200,6 +209,7 @@ const loadChartData = () => {
     ],
   }
 }
+
 watch(productOptions, (newOptions) => {
   products.value = getProductsByOptions()
   loadChartData()
@@ -212,6 +222,8 @@ onMounted(() => {
 })
 </script>
 
+
+
 <style scoped>
 @import url("@/assets/styles/main.css");
 
@@ -222,4 +234,7 @@ onMounted(() => {
   justify-content: center;
 }
 
+table {
+  cursor: pointer;
+}
 </style>

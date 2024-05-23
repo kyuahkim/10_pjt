@@ -283,6 +283,10 @@ const updateComment = function (commentId) {
   })
 }
 
+const goToCommunity = function() {
+  router.push({name:'community'})
+}
+
 </script>
 
 
