@@ -50,7 +50,6 @@
       목록으로 돌아가기
     </RouterLink>
   </div>
-  <!-- 같은 회사, 같은 상품 코드 같은 만기후 이자율 등 다른 상품 보기 -->
   <RouterView />
 </template>
 

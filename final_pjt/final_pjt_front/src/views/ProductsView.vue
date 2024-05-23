@@ -2,7 +2,6 @@
   <h1>전체 상품 목록</h1>
   <hr>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
-    <!-- <div class="bg-light"> -->
     <div class="row ">
       <div class="col-12 mb-">
         <h6 style="margin-left: 50px;">필터링 정보</h6>
@@ -26,7 +25,6 @@
             </select>
           </div>
           <div class="col align-self-center">
-            <!-- <input type="button" class="btn btn-secondary ml-3" value="검색"  @click="searchPlaces" :disabled="selectedDongCode == 'empty' || loadingCount != 0" /> -->
             <input type="button" class="btn btn-secondary ml-3" value="검색"  @click="searchPlaces" />
           </div>
         </div>
@@ -34,16 +32,6 @@
         <div class="card border-light shadow-sm ">
           <div class="card-body">
             <div  class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
-                <!-- searchbar start  -->
-              <!-- <div class="d-flex justify-content-center mb-2" style=" height:100px;">
-                <div class="row">
-                  <div class="col align-self-center">
-                    <input type="text" v-model="$store.state.board.searchWord" @keydown.enter="boardList" placeholder="검색어를 입력하세요" class="form-control" id="searchText" style="width:400px;" />
-                  </div>
-                </div> -->
-                <!-- <div class="row"  style="float:right; margin-right:20px;">
-                <button class="btn mb-3 btn-secondary btn-rounded"
-                  data-mdb-ripple-color="dark" @click="showInsertModal">글쓰기</button></div> -->
               <table class="table table-hover text-center">
                 <thead class="bg-primary text-white">
                   <tr>
@@ -53,7 +41,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr v-for="(board, index) in listGetters" @click="boardDetail(board.boardId)" v-bind:key="index"> -->
                   <tr v-for="product in products" :key="product.id" @click="goToDetail(product.id)">
                     <td>{{ product.id }}</td>
                     <td>{{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</td>
@@ -67,10 +54,6 @@
                 </tbody>
               </table>
             </div>
-            <!-- <pagination v-on:call-parent="movePage"></pagination> -->
-            <!-- <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
-            <detail-modal v-on:call-parent-change-to-update="changeToUpdate" v-on:call-parent-change-to-delete="changeToDelete"></detail-modal>
-            <update-modal v-on:call-parent-update="closeAfterUpdate"></update-modal> -->
           </div>
         </div>
       </div>
@@ -118,10 +101,10 @@ table {
   justify-content: center;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-left: 70px; /* 카드 자체를 가운데로 정렬 */
+  margin-left: 70px;
 }
 
 .card-content {
-  text-align: center; /* 내용물을 가운데 정렬 */
+  text-align: center;
 }
 </style>

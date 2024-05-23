@@ -7,7 +7,6 @@ import ProductsView from '@/views/ProductsView.vue'
 import DetailView from '@/views/DetailView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import exchangeRateView from '@/views/exchangeRateView.vue'
-import UpdateProfileView from '@/views/UpdateProfileView.vue'
 import MapView from '@/views/MapView.vue'
 import CommunityView from '@/views/CommunityView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
@@ -50,11 +49,6 @@ const router = createRouter({
       path: '/exchangerate',
       name: 'exchangerate',
       component: exchangeRateView
-    },
-    {
-      path: '/updateprofile',
-      name: 'updateprofile',
-      component: UpdateProfileView
     },
     {
       path: '/map',

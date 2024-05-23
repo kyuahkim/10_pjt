@@ -134,7 +134,7 @@ const deleteArticle = function (articleId) {
     }
   })
   .then((response) => {
-    router.push({ name: 'community' }) // 게시물 삭제 후 커뮤니티 페이지로 이동
+    router.push({ name: 'community' })
   })
   .catch((error) => {
     console.log(error)
