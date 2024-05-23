@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from .models import DepositOptions, DepositProducts
 from .serializers import DepositOptionsSerializer, DepositProductsSerializer
+from django.views import View
 
 
 # Create your views here.
@@ -209,6 +210,14 @@ def user_join_options(request):
     serializer = DepositOptionsSerializer(join_products,many=True)
     return Response(serializer.data)
 
+# 특정 조건의 옵션 리스트 반환
+@api_view(["GET"])
+def want_options(request, save_trm) :
+    options = DepositOptions.objects.filter(save_trm=save_trm)
+    for option in options :
+        products = DepositProducts.objects.filter(fin_prdt_cd=option.fin_prdt_cd)
+    serializer = DepositProductsSerializer(products, many=True)
+    return Response(serializer.data)
 
 # # 가입 기간에 상관없이 금리가 가장 높은 상품과 해당 상품의 옵션 리스트 출력 
 # @api_view(["GET"])

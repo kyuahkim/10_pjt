@@ -1,10 +1,11 @@
 <template>
   <h1>주변 은행 검색</h1>
   <hr>
+  <!-- <div class="bg-light"> -->
     <div class="row">
-      <div class="col-12 mb-4">
+      <div class="col-12">
         <div class="card border-light shadow-sm ">
-          <div class="card-body">
+          <div class="card-body bg-light">
             <!-- selectbar start  -->
             <div class="d-flex justify-content-center mb-2" style="height:100px;">
               <div class="row">
@@ -82,10 +83,15 @@
               </div>
             </div> -->
               <div id="map" class="col" style=" width:100%; height: 550px"></div>
+            <hr>
+            <ul>
+              <li v-for="place in places" :key="place.id">{{ place.place_name }}</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
+  <!-- </div> -->
 </template>
 
 <script setup>

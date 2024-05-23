@@ -3,7 +3,7 @@
   <hr>
 
   <div class="row ">
-    <div class="col-12 mb-4">
+    <div class="col-12">
       <div class="card border-light shadow-sm ">
         <div class="card-body">
           <div class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
@@ -25,7 +25,7 @@
             </div>
             <div v-else>
               <br>
-              관심 상품을 등록해주세요.
+              가입한 상품이 없습니다.
             </div>
           </div>
         </div>

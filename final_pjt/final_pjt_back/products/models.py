@@ -21,6 +21,7 @@ class DepositProducts(models.Model):
     mtrt_int = models.TextField()
     DSname = models.TextField()
 
+
 class DepositOptions(models.Model):
     product = models.ForeignKey(DepositProducts,on_delete=models.CASCADE)
     fin_prdt_cd = models.TextField()
