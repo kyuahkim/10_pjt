@@ -1,7 +1,7 @@
 <template>
   <h1>커뮤니티</h1>
   <hr>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
+  <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center py-4 bg-light">
     <div class="row">
       <div class="col-12">
         <button type="button" class="btn btn-outline-dark" style="margin-left: 55px; margin-bottom: 20px;" @click="goToCreate">

@@ -240,7 +240,6 @@ onMounted(() => {
   justify-content: center;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-left: 70px; /* 카드 자체를 가운데로 정렬 */
 }
 
 </style>

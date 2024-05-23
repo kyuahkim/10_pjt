@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="nickname">별명</label>
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="email">이메일</label>
@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="password">Password</label>
@@ -64,7 +64,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="age">나이</label>
@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="number">현재 소유 금액 (만원)</label>
@@ -92,7 +92,7 @@
                 </div>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <div class="col-md-12 mb-3">
                 <div class="form-group">
                   <label for="salary">연봉 (만원):</label>
@@ -107,17 +107,15 @@
               </div>
             </div>
             <hr>
-            <div>
-          </div>
             <div class="row mb-3 mt-3">
               <div class="col">
                 <div class="form-group">
                   <div class="btn-group" style="float:right;">
                     <button
-                      type="submit"
-                      id="successAlert"
-                      @click.prevent="updateUserInfo"
-                      class="btn btn-outline-dark"
+                    type="submit"
+                    id="successAlert"
+                    @click.prevent="updateUserInfo"
+                    class="btn btn-outline-dark"
                     >
                       <font-awesome-icon :icon="['fas', 'user-edit']" /> 수정
                     </button>
@@ -127,7 +125,6 @@
             </div>
           </form>
         </div>
-
         <div class="card-body">
           <div class="row">
             <div class="form-group">
