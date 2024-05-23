@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from .serializers import UserSerializers
 from django.contrib.auth import get_user_model
-from products.models import DepositProducts
+from products.models import DepositProducts, DepositOptions
 
 # Create your views here.
 @api_view(["GET", "POST"])
@@ -59,6 +59,18 @@ def update_financial_products(request):
     user = request.user
     financial_products = request.data.get('financial_products', [])
     user.financial_products.set(financial_products)
+    user.save()
+    serializer = UserSerializers(user)
+    return Response(serializer.data)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_join_products(request) :
+    user = request.user
+    join_product_ids = request.data.get('join_products', [])
+    join_products = DepositOptions.objects.filter(id__in=join_product_ids)
+    user.join_products.set(join_products)
     user.save()
     serializer = UserSerializers(user)
     return Response(serializer.data)

@@ -3,7 +3,7 @@
   <hr>
 
   <div class="row ">
-    <div class="col-12 mb-4">
+    <div class="col-12">
       <div class="card border-light shadow-sm ">
         <div class="card-body">
           <div class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
@@ -25,7 +25,7 @@
             </div>
             <div v-else>
               <br>
-              관심 상품을 등록해주세요.
+              가입한 상품이 없습니다.
             </div>
           </div>
         </div>
@@ -48,33 +48,46 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+
+import { onMounted, ref, watch } from 'vue'
 import { useBankStore } from '@/stores/bank'
-import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
+import { useRoute } from 'vue-router'
 import axios from 'axios'
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const route = useRoute()
-const router = useRouter()
 const store = useBankStore()
-const productsNumbers = ref([])
+const productOptions = ref([])
+const products = ref([])
 
 const userId = ref(route.params.userId)
 
-const getProductById = (id) => store.products.find(product => product.id === id)
-const productOptions = ref({})
-const type = ref(0)
+const getProductsByOptions = () => {
+  const productIds = productOptions.value.map(option => option.product)
+  return store.products.filter(product => productIds.includes(product.id))
+}
 
-const fetchProductOptions = (product) => {
+const fetchProductOptions = () => {
   axios({
     method: 'get',
-    url: `http://127.0.0.1:8000/api/deposit-products-options/${product.fin_prdt_cd}/`,
+    url: `http://127.0.0.1:8000/api/user_join_options/`,
     headers: {
-      Authorization: `Token ${store.token}`
-    }
+      Authorization: `Token ${store.token}`,
+    },
   })
     .then(response => {
       productOptions.value = response.data
-      type.value = productOptions.value[0].id
     })
     .catch(error => {
       console.error('Error fetching product options:', error)
@@ -195,13 +208,12 @@ watch(productOptions, (newOptions) => {
 onMounted(() => {
   store.getUserInfo()
   store.getCurrentUser()
-  productsNumbers.value = store.currentUserData.financial_products
-  // fetchProductOptions(product)
+  fetchProductOptions()
 })
-console.log(store.currentUserData)
 </script>
 
 <style scoped>
+@import url("@/assets/styles/main.css");
 
 .chart-container{
   width: 70%;

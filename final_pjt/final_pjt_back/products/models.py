@@ -19,6 +19,8 @@ class DepositProducts(models.Model):
     join_way = models.TextField()
     spcl_cnd = models.TextField()
     mtrt_int = models.TextField()
+    DSname = models.TextField()
+
 
 class DepositOptions(models.Model):
     product = models.ForeignKey(DepositProducts,on_delete=models.CASCADE)

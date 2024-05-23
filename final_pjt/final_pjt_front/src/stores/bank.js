@@ -19,7 +19,6 @@ export const useBankStore = defineStore('bank', () => {
       url: `${API_URL}/api/products/`,
     })
     .then((response) => {
-      // console.log(response.data)
       products.value = response.data
     })
     .catch((error) => {
@@ -125,6 +124,7 @@ export const useBankStore = defineStore('bank', () => {
       })
       .catch((error) => {
         console.log(error)
+        alert('정보를 올바르게 입력해주세요')
       })
   }
 
@@ -216,12 +216,46 @@ export const useBankStore = defineStore('bank', () => {
       console.log('좋아요 업데이트 성공')
     })
     .catch((error) => {
-      console.log('좋아요 업데이트 중 오류 발생: ' ,error)
+      console.log('좋아요 업데이트 중 오류 발생: ' , error)
+    })
+  }
+
+  const joinProduct = function (optionId) {
+    const index = currentUserData.value.join_products.findIndex((element) => element === optionId);
+    if (index !== -1) {
+      currentUserData.value.join_products.splice(index, 1)
+      alert('해당 상품 옵션에 가입이 취소되었습니다.')
+    } else {
+      currentUserData.value.join_products.push(optionId)
+      alert('해당 상품 옵션에 가입이 완료되었습니다.')
+    }
+    updateUserJoinProducts()
+  }
+  
+  const updateUserJoinProducts = function () {
+    const joinProductIds = currentUserData.value.join_products
+    axios({
+      method: 'put',
+      url: `${API_URL}/users/update_join_products/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      },
+      data: {
+        join_products: joinProductIds
+      }
+    })
+    .then((response) => {
+      console.log('가입 상품 업데이트 성공')
+    })
+    .catch((error) => {
+      console.log('가입 상품 업데이트 중 오류 발생: ', error)
     })
   }
 
   return { products, articles, token, id, userdata, currentUserData, isLogin,
     getProducts, getArticles, createArticle,
     getUserInfo, getCurrentUser, signup, login, logout,
-    interest, updateUserFinancialProducts, interestArticle, updateArticleLikeUsers, }
+    interest, updateUserFinancialProducts, interestArticle, updateArticleLikeUsers,
+    joinProduct, updateUserJoinProducts,
+  }
 }, { persist : true})

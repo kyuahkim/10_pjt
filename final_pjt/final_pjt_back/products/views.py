@@ -8,15 +8,17 @@ from django.http import JsonResponse
 from django.conf import settings
 from .models import DepositOptions, DepositProducts
 from .serializers import DepositOptionsSerializer, DepositProductsSerializer
+from django.views import View
 
 
 # Create your views here.
 API_KEY = settings.DEPOSIT_API_KEY
 EXCHANGE_RATE_API_KEY = settings.EXCHANGE_RATE_API_KEY
-# A : 정기예금 상품 목록과 옵션목록 DB에 저장
+
+# 정기예금 상품 목록과 옵션목록 DB에 저장
 @api_view(["GET"])
 def save_deposit_products(request):
-    # API로 전체 데이터 다 가져온거고 
+    # 예금 데이터
     url = f'http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth={API_KEY}&topFinGrpNo=020000&pageNo=1'
     response = requests.get(url).json()
     # is_valid -> serializer 로 데이터 저장 
@@ -39,6 +41,8 @@ def save_deposit_products(request):
         spcl_cnd = li.get('spcl_cnd', "없음")
         # 만기후 이자율
         mtrt_int = li.get('mtrt_int', "없음")
+        # 예금
+        DSname = '예금'
 
         save_data = {
             'fin_prdt_cd': fin_prdt_cd,
@@ -50,6 +54,7 @@ def save_deposit_products(request):
             'join_way': join_way,
             'spcl_cnd': spcl_cnd,
             'mtrt_int': mtrt_int,
+            'DSname' : DSname,
         }
         
         serializer = DepositProductsSerializer(data=save_data)
@@ -60,10 +65,87 @@ def save_deposit_products(request):
         fin_prdt_cd = ol.get('fin_prdt_cd', "없음")
         product = DepositProducts.objects.get(fin_prdt_cd = fin_prdt_cd)
         intr_rate_type_nm = ol.get('intr_rate_type_nm', "없음")
-        intr_rate = ol.get('intr_rate', -1)
-        intr_rate2 = ol.get('intr_rate2', -1)
+        intr_rate = ol['intr_rate']
+        if intr_rate==None:
+            intr_rate = -1
+        intr_rate2 = ol['intr_rate2']
+        if intr_rate2==None:
+            intr_rate2 = -1
         save_trm = ol.get('save_trm', -1)
         
+        save_data = {
+            'fin_prdt_cd': fin_prdt_cd,
+            'intr_rate_type_nm': intr_rate_type_nm,
+            'intr_rate': intr_rate,
+            'intr_rate2': intr_rate2,
+            'save_trm': save_trm,
+        }
+        
+        serializer = DepositOptionsSerializer(data=save_data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(product = product)
+    # 데이터 삽입 실패시 적절한 실패 안내 문구를 작성해야한다. 
+    return JsonResponse({"message" : "okay"})
+
+
+# 적금 상품 목록과 옵션목록 DB에 저장
+@api_view(["GET"])
+def save_saving_products(request):
+    # 적금 데이터
+    url = f'http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth={API_KEY}&topFinGrpNo=020000&pageNo=1'
+    response = requests.get(url).json()
+    # is_valid -> serializer 로 데이터 저장 
+    for li in response.get('result').get('baseList'):
+        # 금융 상품 코드
+        fin_prdt_cd = li.get('fin_prdt_cd', "없음")
+        # 금융 회사 명
+        kor_co_nm = li.get('kor_co_nm', "없음")
+        # 금융 상품 명
+        fin_prdt_nm = li.get('fin_prdt_nm', "없음")
+        # 기타 유의 사항
+        etc_note = li.get('etc_note', "없음")
+        # 가입 제한
+        join_deny = li.get('join_deny')
+        # 가입 대상
+        join_member = li.get('join_member', "없음")
+        # 가입 방법
+        join_way = li.get('join_way', "없음")
+        # 우대 조건
+        spcl_cnd = li.get('spcl_cnd', "없음")
+        # 만기후 이자율
+        mtrt_int = li.get('mtrt_int', "없음")
+        # 예금 or 적금
+        DSname = '적금'
+
+        save_data = {
+            'fin_prdt_cd': fin_prdt_cd,
+            'kor_co_nm': kor_co_nm,
+            'fin_prdt_nm': fin_prdt_nm,
+            'etc_note': etc_note,
+            'join_deny': join_deny,
+            'join_member': join_member,
+            'join_way': join_way,
+            'spcl_cnd': spcl_cnd,
+            'mtrt_int': mtrt_int,
+            'DSname' : DSname,
+        }
+        
+        serializer = DepositProductsSerializer(data=save_data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            
+    for ol in response.get('result').get('optionList'):
+        # print(ol)
+        fin_prdt_cd = ol.get('fin_prdt_cd', "없음")
+        product = DepositProducts.objects.get(fin_prdt_cd = fin_prdt_cd)
+        intr_rate_type_nm = ol.get('intr_rate_type_nm', "없음")
+        intr_rate = ol['intr_rate']
+        if intr_rate==None:
+            intr_rate = -1
+        intr_rate2 = ol['intr_rate2']
+        if intr_rate2==None:
+            intr_rate2 = -1
+        save_trm = ol.get('save_trm', -1)
         save_data = {
             'fin_prdt_cd': fin_prdt_cd,
             'intr_rate_type_nm': intr_rate_type_nm,
@@ -121,6 +203,21 @@ def deposit_products_options(request, fin_prdt_cd):
     serializer = DepositOptionsSerializer(options, many=True)
     return Response(serializer.data)
 
+# 유저가 가입한 상품 조회
+@api_view(["GET"])
+def user_join_options(request):
+    join_products = request.user.join_products.all()
+    serializer = DepositOptionsSerializer(join_products,many=True)
+    return Response(serializer.data)
+
+# 특정 조건의 옵션 리스트 반환
+@api_view(["GET"])
+def want_options(request, save_trm) :
+    options = DepositOptions.objects.filter(save_trm=save_trm)
+    for option in options :
+        products = DepositProducts.objects.filter(fin_prdt_cd=option.fin_prdt_cd)
+    serializer = DepositProductsSerializer(products, many=True)
+    return Response(serializer.data)
 
 # # 가입 기간에 상관없이 금리가 가장 높은 상품과 해당 상품의 옵션 리스트 출력 
 # @api_view(["GET"])

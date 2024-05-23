@@ -37,15 +37,26 @@
       <p>저축 기간 [단위: 개월] : {{ productOption.save_trm }}</p>
       <p>저축 금리 [소수점 2자리] : {{ productOption.intr_rate }}</p>
       <p>최고 우대 금리 [소수점 2자리] : {{ productOption.intr_rate2 }}</p>
+      <button @click.prevent="store.joinProduct(productOption.id)" class="btn">
+        <span v-if="store.currentUserData.join_products.includes(productOption.id)">가입 취소하기</span>
+        <span v-else>가입하기</span>
+      </button>
       <hr>
     </div>
   </div>
+  <div>
+    <RouterLink
+      :to="{ name: 'products'}">
+      목록으로 돌아가기
+    </RouterLink>
+  </div>
   <!-- 같은 회사, 같은 상품 코드 같은 만기후 이자율 등 다른 상품 보기 -->
+  <RouterView />
 </template>
 
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { useBankStore } from '@/stores/bank'
 import { onMounted, ref } from 'vue'
 import axios from 'axios';
