@@ -14,4 +14,5 @@ urlpatterns = [
     path('want_options/',views.want_options, name="want_options"),
     path('deposit-products-options/<str:fin_prdt_cd>/', views.deposit_products_options, name="deposit_products_options"),
     path('',include(router.urls)),
+    path('recommend/<int:user_id>/',views.recommend_products,name='recommend_products'),
 ]

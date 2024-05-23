@@ -9,7 +9,7 @@
       <div class="col-12">
         <div v-if="article.user == currentUser.id && !editFlag" style="margin-bottom: 20px;">
           <button type="button" class="btn btn-outline-success" style="margin-right: 10px;" @click.prevent="editArticle">게시물 수정</button>
-          <button type="button" class="btn btn-outline-danger" @click.prevent="confirmDeleteArticle(article.id)">게시물 삭제</button>
+          <button type="button" class="btn btn-outline-danger" @click.prevent="deleteArticle(article.id)">게시물 삭제</button>
         </div>
         <div class="card card-body shadow-sm mb-4 ">
           <div class="row">
@@ -68,7 +68,7 @@
                         <div>
                           <br>
                           <div>
-                            <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
+                            <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
                           </div>
                           <br>
                           <button type="button" class="btn btn-outline-secondary" @click.prevent="updateComment(comment.id)">수정 완료</button>
@@ -104,7 +104,6 @@
     </div>
   </div>
   <hr>
-  <RouterView />
 </template>
 
 
@@ -112,7 +111,7 @@
 import { useBankStore } from '@/stores/bank'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
@@ -140,6 +139,7 @@ onMounted(async () => {
   store.getArticles()
   getComments()
 })
+
 const deleteArticle = function (articleId) {
   const article = store.articles.find((element) => element.id === articleId)
   axios({
@@ -218,7 +218,7 @@ const deleteComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
   axios({
     method: 'delete',
-    url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
+    url: `http://127.0.0.1:8000/articles/${articleId}/update_comment/${comment.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
@@ -255,15 +255,15 @@ const createComment = function () {
   })
 }
 
-const change = function () {
-  check.value = 1-check.value
+const change = function (commentId) {
+  check.value = commentId-check.value
 }
 
 const updateComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
   axios({
     method: 'put',
-    url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
+    url: `http://127.0.0.1:8000/articles/${articleId}/update_comment/${comment.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
@@ -277,6 +277,7 @@ const updateComment = function (commentId) {
     getComments()
     change()
     content.value = ''
+    check.value = commentId-check.value
   })
   .catch((error) => {
     console.log(error)

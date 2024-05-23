@@ -39,15 +39,25 @@
   <div v-if="chartData">
     <div class="row justify-content-center">
       <Bar :data="chartData" :options="chartOptions" />
-      <!-- <div class="col-12 mx-4">
-        <div class="chart-container">
-        </div>
-      </div> -->
     </div>
-    <!-- <div class="row justify-content-center">
-      <div class="col-12 mx-4">
+
+  </div>
+
+  <hr>
+  <h1>가입한 상품 기반으로 AI가 추천한 상품이에요</h1>
+  <p>tensorflow의 model을 사용해 다른 사용자들이 가입한 상품을 기반으로 추천해요</p>
+  <br>
+
+    <div class="row">
+    <div class="col-sm-3 mb-3 mb-sm-0" v-for="product of recommendProducts">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
+          <p class="card-text">{{ product.kor_co_nm }}</p>
+          <a @click="goToDetail(product.id)" class="btn btn-primary">상품 정보 보기</a>
+        </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -76,8 +86,10 @@ const store = useBankStore()
 const productOptions = ref([])
 const products = store.products
 const productnames = ref([])
+const recommendProductsCd = ref({})
+const recommendProducts = ref([])
 
-const userId = ref(route.params.userId)
+const userId = store.currentUserData.id
 
 const getProductsByOptions = () => {
   const productIds = productOptions.value.map(option => option.product)
@@ -194,22 +206,6 @@ const loadChartData = () => {
         backgroundColor: '#80AFDC',
         data: intrRates2,
       },
-      // {
-      //   label: 'Average Interest Rate',
-      //   backgroundColor: '#f8e879',
-      //   data: averageRatesArray,
-      //   borderWidth: 1,
-      //   borderColor: '#f8e879',
-      //   type: 'line',
-      // },
-      // {
-      //   label: 'Average Interest Rate 2',
-      //   backgroundColor: '#79f8d1',
-      //   data: averageRates2Array,
-      //   borderWidth: 1,
-      //   borderColor: '#79f8d1',
-      //   type: 'line',
-      // },
     ],
   }
 }
@@ -219,10 +215,29 @@ watch(productOptions, (newOptions) => {
   loadChartData()
 })
 
+
+
 onMounted(() => {
   store.getUserInfo()
   store.getCurrentUser()
   fetchProductOptions()
+  axios({
+    method:'get',
+    url:`http://localhost:8000/api/recommend/${userId}/`,
+    headers: {
+      Authorization: `Token ${store.token}`
+    },
+  })
+  .then((response)=>{
+    console.log(response.data)
+    // response.json()
+    return response
+  })
+  .then((response)=>{
+    console.log('data',response.data.recommendations)
+    recommendProductsCd.value = response.data.recommendations
+    recommendProducts.value = store.products.filter(product => recommendProductsCd.value.includes(product.fin_prdt_cd))
+  })
 })
 </script>
 

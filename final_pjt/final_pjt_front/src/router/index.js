@@ -74,7 +74,7 @@ const router = createRouter({
       path:'/joinproducts',
       name:'joinproducts',
       component:JoinProductsView,
-    }
+    },
   ]
 })
 

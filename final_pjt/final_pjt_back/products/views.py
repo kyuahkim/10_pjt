@@ -9,7 +9,8 @@ from django.conf import settings
 from .models import DepositOptions, DepositProducts
 from .serializers import DepositOptionsSerializer, DepositProductsSerializer
 from django.views import View
-
+from products.recommendation_model import load_trained_model
+import numpy as np
 
 # Create your views here.
 API_KEY = settings.DEPOSIT_API_KEY
@@ -179,23 +180,6 @@ def get_exchange_rate(request):
         return JsonResponse({'error': 'Invalid JSON response'}, status=500)
     return JsonResponse(data, safe=False)
 
-
-# #  GET : 전체 정기예금 상품 목록 반환, POST 상품 데이터 저장
-# @api_view(["GET", "POST"])
-# def deposit_products(request):
-#     # B
-#     if request.method == "GET":
-#         deposit_products = DepositProducts.objects.all()
-#         serializers = DepositProductsSerializer(deposit_products, many=True)
-#         return Response(serializers.data)
-#     # C
-#     elif request.method == "POST":
-#         serializer = DepositProductsSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 # 특정 상품의 옵션 리스트 반환
 @api_view(["GET"])
 def deposit_products_options(request, fin_prdt_cd):
@@ -219,14 +203,26 @@ def want_options(request, save_trm) :
     serializer = DepositProductsSerializer(products, many=True)
     return Response(serializer.data)
 
-# # 가입 기간에 상관없이 금리가 가장 높은 상품과 해당 상품의 옵션 리스트 출력 
-# @api_view(["GET"])
-# def top_rate(request):
-#     options = DepositOptions.objects.order_by("-intr_rate2")
-#     option = options[0]
-#     product = option.product
-#     context = {
-#         'deposit_product' : DepositProductsSerializer(product).data,
-#         'options' : DepositOptionsSerializer(option).data,
-#     }
-#     return Response(context)
+# 사용자가 가입한 상품 기반 AI 상품 추천
+@api_view(["GET"])
+def recommend_products(request, user_id):
+    model, user_id_map, product_id_map = load_trained_model()
+    
+    if user_id not in user_id_map:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+    user_idx = user_id_map[user_id]
+    product_indices = list(product_id_map.values())
+    
+    # 모델 출력
+    user_array = np.array([user_idx] * len(product_indices))
+    product_array = np.array(product_indices)
+    
+    predictions = model.predict([user_array, product_array]).flatten()
+    
+    product_recommendations = sorted(zip(product_id_map.keys(), predictions), key=lambda x: x[1], reverse=True)
+    
+    # Top 4 추천 출력
+    top_recommendations = [product_id for product_id, _ in product_recommendations[:4]]
+    
+    return JsonResponse({'recommendations': top_recommendations})
