@@ -108,11 +108,11 @@ export default {
 
 <style scoped>
 pre {
-  background-color: #f8f9fa; /* Light grey background */
-  padding: 15px;            /* Padding around the content */
-  border-radius: 5px;       /* Rounded corners */
-  border: 1px solid #dee2e6; /* Light grey border */
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
   color: 1px solid black;
-  overflow: auto;           /* Enable scrolling if content overflows */
+  overflow: auto;
 }
 </style>

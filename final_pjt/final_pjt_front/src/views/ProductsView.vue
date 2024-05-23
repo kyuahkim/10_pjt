@@ -110,6 +110,6 @@ table {
 }
 
 .card-content {
-  text-align: center; /* 내용물을 가운데 정렬 */
+  text-align: center;
 }
 </style>
