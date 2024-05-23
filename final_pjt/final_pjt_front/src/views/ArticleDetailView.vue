@@ -1,4 +1,8 @@
 <template>
+  <button type="button" class="btn btn-outline-dark" @click.prevent="goToCommunity"> 게시물 목록 돌아가기</button>
+
+  <br>
+  <br>
   <h1>게시물 상세 페이지</h1>
   <div class="main bg-light p-4">
     <div class="row">
@@ -10,17 +14,11 @@
         <div class="card card-body shadow-sm mb-4 ">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <div>
-                <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
-                <span style="display: inline-block; margin-left: 20px;">
-                  <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
-                    <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
-                    <span v-else>🤍</span>
-                  </button>
-                </span>
-              </div>
-              <div class="shadow-line"></div>
-                <div v-if="editFlag">
+                <b>작성자 : {{ writer.username }} </b>
+                <p> {{ article.created_at.slice(0,10) }}  {{ article.created_at.slice(11,19) }}</p>
+                <hr>
+                <br>
+                <div v-if="editFlag" class="title">
                   <h4>제목 수정</h4>
                   <input type="text" v-model="updatedTitle"/>
                   <hr>
@@ -30,55 +28,76 @@
                   <button type="button" class="btn btn-outline-success" @click.prevent="updateArticle(article.id)" style="margin-right: 10px;">저장</button>
                   <button type="button" class="btn btn-outline-danger"  @click.prevent="cancelEdit">취소</button>
                 </div>
-                <div v-else>
-                  <h4>제목</h4>
-                  <p>{{ updatedTitle }}</p>
-                  <hr>
-                  <h4>내용</h4>
+                <div v-else class="title">
+                  <!-- <h4>제목</h4> -->
+                  <h3>{{ updatedTitle }}</h3>
+                  <br>
                   <p>{{ updatedContent }}</p>
                 </div>
               </div>
-            <div class="shadow-line"></div>
-            <div>
-              <h4>댓글</h4>
-              <ul v-if="comments.length">
-                <li v-for="comment of comments">
-                  <p>{{ comment.content }}</p>
-                  <p v-if="comment.user == currentUser.id">
-                    <div v-if="check != comment.id">
-                      <button type="button" class="btn btn-outline-success" @click.prevent="change(comment.id)" style="display: inline-block; margin-right: 10px;">수정</button>
-                      <button type="button" class="btn btn-outline-danger" @click.prevent="deleteComment(comment.id)" style="display: inline-block;">삭제</button>
+              
+              <div class="large d-flex justify-content-start mb-4" style="width: 100%;">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item">
+                    <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
+                      <span v-if="article.like_users.includes(currentUser.id)"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span>
+                      <span v-else><font-awesome-icon :icon="['far', 'thumbs-up']" /></span>
+                    </button>
+                    <span>{{ article.like_users.length }}</span>
+                  </li>
+                  <li class="list-group-item">
+                    <div style="margin-top: 7px; margin-left: 10px;">
+                      <span style="margin-right: 15px;"><font-awesome-icon :icon="['fas', 'comment']" /></span>
+                      <span>{{ comments.length }}</span>
                     </div>
-                    <div v-if="check == comment.id">
-                      <div>
-                        <br>
-                        <div>
-                          <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
-                        </div>
-                        <br>
-                        <button type="button" class="btn btn-outline-secondary" @click.prevent="updateComment(comment.id)">수정 완료</button>
+                  </li>
+                </ul>
+              </div>
+              <div class="shadow-line"></div>
+              <div>
+                <h4>댓글</h4>
+                <ul v-if="comments.length">
+                  <li v-for="comment of comments">
+                    <p>{{ comment.content }}</p>
+                    <p v-if="comment.user == currentUser.id">
+                      <div v-if="check != comment.id">
+                        <button type="button" class="btn btn-outline-success" @click.prevent="change(comment.id)" style="display: inline-block; margin-right: 10px;">수정</button>
+                        <button type="button" class="btn btn-outline-danger" @click.prevent="deleteComment(comment.id)" style="display: inline-block;">삭제</button>
                       </div>
-                    </div>
-                  </p>
-                </li>
-              </ul>
-              <ul v-else>
-                <p>아직 등록된 댓글이 없습니다.</p>
-              </ul>
-            </div>
-            <hr>
-            <div>
-              <form>
-                <div>
-                  <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
+                      <div v-if="check == comment.id">
+                        <div>
+                          <br>
+                          <div>
+                            <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
+                          </div>
+                          <br>
+                          <button type="button" class="btn btn-outline-secondary" @click.prevent="updateComment(comment.id)">수정 완료</button>
+                        </div>
+                      </div>
+                    </p>
+                  </li>
+                </ul>
+                <ul v-else>
+                  <p>아직 등록된 댓글이 없습니다.</p>
+                </ul>
+              </div>
+              <hr>
+              <div>
+              <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                <form>
+                  <div class="d-flex flex-start w-100">
+                  <div data-mdb-input-init class="form-outline w-100">
+                    <textarea class="form-control" type="text" id="content" v-model.trim="content" rows="4"
+                    style="background: #fff;"></textarea>
+                  </div>
                 </div>
-                <br>
-                <button type="button" class="btn btn-outline-success" @click.prevent="createComment">댓글 작성</button>
+                <div class="float-end mt-3 pt-1">
+                  <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-success btn-sm" @click.prevent="createComment">댓글 작성</button>
+                  <!-- <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm">Cancel</button> -->
+                </div>
               </form>
+              </div>
             </div>
-            <div class="shadow-line"></div>
-            <button type="button" class="btn btn-outline-dark" @click.prevent="goToCommunity">게시물 목록 돌아가기</button>
-            <hr>
           </div>
         </div>
       </div>
@@ -275,9 +294,15 @@ const updateComment = function (commentId) {
 }
 
 .shadow-line {
-  height: 2px;
+  height: 1px;
   background: #000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   margin: 20px 0;
+}
+
+.title{
+  height: 700px;
+  align-items: center;
+  justify-content: center;
 }
 </style>
