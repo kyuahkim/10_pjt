@@ -1,13 +1,8 @@
 <template>
   <h1>주변 은행 검색</h1>
   <hr>
-<<<<<<< Updated upstream
-
-  <main class="content">
-=======
   <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light"> -->
 
->>>>>>> Stashed changes
     <div class="row">
       <div class="col-12">
         <div class="card border-light shadow-sm ">
@@ -93,11 +88,7 @@
         </div>
       </div>
     </div>
-<<<<<<< Updated upstream
-  </main>
-=======
   <!-- </div> -->
->>>>>>> Stashed changes
 </template>
 
 <script setup>

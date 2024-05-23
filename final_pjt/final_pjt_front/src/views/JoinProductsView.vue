@@ -2,37 +2,6 @@
   <h1>가입한 상품 목록</h1>
   <hr>
 
-<<<<<<< Updated upstream
-  <main class="content">
-    <div class="row ">
-      <div class="col-12 mb-4">
-        <div class="card border-light shadow-sm ">
-          <div class="card-body">
-            <div  class="mt-3 mb-3" style="margin-left:50px; margin-right:50px">
-              <div v-if="productsNumbers.length">
-                <table class="table table-hover text-center">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th class="border-gray-200">은행명</th>
-                      <th class="border-gray-200" style="width:700px;">상품명</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="number of productsNumbers">
-                      <template v-if="product = getProductById(number)">
-                        <td>{{ product.kor_co_nm }}</td>
-                        <td>{{ product.fin_prdt_nm }}</td>
-                      </template>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div v-else>
-                <br>
-                관심 상품을 등록해주세요.
-              </div>
-              </div>
-=======
   <div class="row ">
     <div class="col-12 mb-4">
       <div class="card border-light shadow-sm ">
@@ -57,16 +26,10 @@
             <div v-else>
               <br>
               관심 상품을 등록해주세요.
->>>>>>> Stashed changes
             </div>
           </div>
         </div>
       </div>
-<<<<<<< Updated upstream
-    </main>
-
-  
-=======
     </div>
   </div>
   <br>
@@ -82,17 +45,12 @@
       </div>
     </div>
   </div>
->>>>>>> Stashed changes
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useBankStore } from '@/stores/bank'
-<<<<<<< Updated upstream
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
-=======
-import { useRoute, useRouter } from 'vue-router'
->>>>>>> Stashed changes
 import axios from 'axios'
 
 const route = useRoute()
@@ -122,8 +80,6 @@ const fetchProductOptions = (product) => {
       console.error('Error fetching product options:', error)
     })
 }
-<<<<<<< Updated upstream
-=======
 
 const goToDetail = function (id){
   router.push({ name: 'detail', params:{ id: id } })
@@ -236,7 +192,6 @@ watch(productOptions, (newOptions) => {
   loadChartData()
 })
 
->>>>>>> Stashed changes
 onMounted(() => {
   store.getUserInfo()
   store.getCurrentUser()
@@ -248,9 +203,6 @@ console.log(store.currentUserData)
 
 <style scoped>
 
-<<<<<<< Updated upstream
-</style>
-=======
 .chart-container{
   width: 70%;
   height: 40%;
@@ -259,4 +211,3 @@ console.log(store.currentUserData)
 }
 
 </style>
->>>>>>> Stashed changes
