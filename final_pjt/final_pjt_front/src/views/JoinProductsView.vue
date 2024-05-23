@@ -16,7 +16,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="product in products" :key="product.id">
+                  <tr v-for="product in products" :key="product.id" @click="goToDetail(product.id)">
                     <td>{{ product.kor_co_nm }}</td>
                     <td>{{ product.fin_prdt_nm }}</td>
                   </tr>
@@ -32,9 +32,18 @@
       </div>
     </div>
   </div>
-  <!-- {{ productOptions }} -->
+  <br>
+  <br>
+  <h1>가입한 상품 금리를 한번에 모아보세요</h1>
+  <hr>
   <div v-if="chartData">
-    <Bar :data="chartData" :options="chartOptions" />
+    <div class="row justify-content-center">
+      <div class="col-12 mx-4">
+        <div class="chart-container">
+          <Bar :data="chartData" :options="chartOptions" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,6 +94,10 @@ const fetchProductOptions = () => {
     })
 }
 
+const goToDetail = function (id){
+  router.push({ name: 'detail', params:{ id: id } })
+}
+
 const chartData = ref(null)
 const chartOptions = ref({
   responsive: true,
@@ -96,6 +109,7 @@ const chartOptions = ref({
           family: 'Gowun Batang',
           size: 14, 
         },
+        color: 'black'
       },
     },
     title: {
@@ -104,12 +118,41 @@ const chartOptions = ref({
       labels: {
         font: {
           family: 'Gowun Batang',
-          size: 14, 
+          size: 40, 
+        },
+      },
+    },
+    tooltip: {
+      opacity: 1.0,
+    },
+  },
+  elements: {
+    bar: {
+      borderWidth: 2, // Set border width for bars
+      borderColor: 'rgba(0,0,0,0.2)', // Set border color for bars
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        font: {
+          family: 'Gowun Batang',
+          size: 14,
+        },
+      },
+    },
+    x: {
+      ticks: {
+        font: {
+          family: 'Gowun Batang',
+          size: 14,
         },
       },
     },
   },
 })
+
 
 const loadChartData = () => {
   const productIds = productOptions.value.map(option => option.product)
@@ -130,12 +173,12 @@ const loadChartData = () => {
     datasets: [
       {
         label: '저축금리',
-        backgroundColor: '#f87979',
+        backgroundColor: '#7F92DB',
         data: intrRates,
       },
       {
         label: '최고우대금리',
-        backgroundColor: '#7acbf9',
+        backgroundColor: '#80AFDC',
         data: intrRates2,
       },
       // {
@@ -172,5 +215,11 @@ onMounted(() => {
 <style scoped>
 @import url("@/assets/styles/main.css");
 
+.chart-container{
+  width: 70%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+}
 
 </style>

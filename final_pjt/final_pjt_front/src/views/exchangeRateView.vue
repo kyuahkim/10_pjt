@@ -1,43 +1,49 @@
 <template>
-  <div>
-    <h1>환율 정보</h1>
-    <hr>
-    <div>
-      <h3>외화로 환전</h3>
-      <p>한화 ⇒ 외화</p>
-      <select name="외화" id="foreign" v-model="selectedForeign"> <!-- 수정된 부분 -->
-        <option value="" selected>--------국가/통화 선택--------</option>
-        <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
-          {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
-        </option>
-      </select>
-      <br><br>
-      <p>
-        한화 : <input type="text" id="beforeWon" v-model.trim="beforeWon">
-      </p>
-      <p v-if="selectedExchange">
-        {{ selectedExchange.cur_nm }} : {{ calculateToForeign() }}
-      </p>
+  <h1>환율 정보</h1>
+  <hr>
+  <div class="py-4 bg-light">
+    <div class="row mx-3">
+      <div class="col-12">
+        <div>
+
+          <h3>외화로 환전</h3>
+          <p>한화 ⇒ 외화</p>
+
+
+          <div class="input-group mb-3" style="height: 70px;">
+            <select class="form-select form-select-sm" name="외화" id="foreign" v-model="selectedForeign" style="width: 20%;">
+              <option value="" selected>국가/통화</option>
+              <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
+                {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
+              </option>
+            </select>
+          <input class="form-control" type="text" id="calculatedWon" v-model.trim="calculatedWon" style="width: 80%;">
+          <br>
+          <p v-if="selectedExchange">
+              {{ selectedExchange.cur_nm }} : {{ calculateToForeign() }}
+            </p>
+        </div>
+        <br>
+        <div>
+          <h3>한화로 환전</h3>
+          <p>외화 ⇒ 한화</p>
+          <div class="input-group mb-3" style="height: 70px;">
+            <select class="form-select form-select-sm" name="외화" id="foreignToWon" v-model="selectedForeignToWon" style="width: 20%;">
+              <option value="" selected>국가/통화</option>
+              <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
+                {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
+              </option>
+            </select>
+            <input class="form-control" type="text" id="calculatedForeign" v-model.trim="calculatedForeign" style="width: 80%;">
+            <br>
+            <p v-if="selectedExchangeToWon">
+              {{ selectedExchangeToWon.cur_nm }} : {{ calculateToWon() }}
+            </p>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
-    <hr>
-    <div>
-      <h3>한화로 환전</h3>
-      <p>외화 ⇒ 한화</p>
-      <select name="외화" id="foreignToWon" v-model="selectedForeignToWon"> <!-- 수정된 부분 -->
-        <option value="" selected>--------국가/통화 선택--------</option>
-        <option v-for="exchange in exchanges" :key="exchange.cur_unit" :value="exchange.cur_unit">
-          {{ exchange.cur_unit }} - {{ exchange.cur_nm }}
-        </option>
-      </select>
-      <br><br>
-      <p>
-        외화 : <input type="text" id="beforeForeign" v-model.trim="beforeForeign">
-      </p>
-      <p v-if="selectedExchangeToWon">
-        한화 : {{ calculateToWon() }} (원)
-      </p>
-    </div>
-    <hr>
   </div>
 </template>
   
@@ -52,8 +58,8 @@ export default {
       selectedForeignToWon: '',
       selectedExchange: null,
       selectedExchangeToWon: null,
-      beforeWon: 0,
-      beforeForeign: 0,
+      calculatedWon : 0,
+      calculatedForeign: 0,
     };
   },
   mounted() {
@@ -69,19 +75,21 @@ export default {
       }
     },
     calculateToForeign() {
-      if (!this.beforeWon || !this.selectedExchange || !this.selectedExchange.tts) {
+      if (!this.calculatedWon || !this.selectedExchange || !this.selectedExchange.tts) {
         return 'Invalid Input'
       }
       const tts = parseFloat(this.selectedExchange.tts.replace(/,/g, ''))
-      const result = parseFloat(this.beforeWon) / tts;
+      const result = parseFloat(this.calculatedWon) / tts;
+      this.calculatedForeign = result.toFixed(2)
       return result.toFixed(2)
     },
     calculateToWon() {
-      if (!this.beforeForeign || !this.selectedExchangeToWon || !this.selectedExchangeToWon.ttb) {
+      if (!this.calculatedForeign || !this.selectedExchangeToWon || !this.selectedExchangeToWon.ttb) {
         return 'Invalid Input'
       }
       const ttb = parseFloat(this.selectedExchangeToWon.ttb.replace(/,/g, ''))
-      const result = parseFloat(this.beforeForeign) * ttb
+      const result = parseFloat(this.calculatedForeign) * ttb
+      this.calculatedWon = result.toFixed(0)
       return result.toFixed(0)
     }
   },
