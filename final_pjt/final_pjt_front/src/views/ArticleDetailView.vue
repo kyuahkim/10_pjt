@@ -28,7 +28,7 @@
                   <button type="button" class="btn btn-outline-success" @click.prevent="updateArticle(article.id)" style="margin-right: 10px;">저장</button>
                   <button type="button" class="btn btn-outline-danger"  @click.prevent="cancelEdit">취소</button>
                 </div>
-                <div v-else class="title">
+                <div v-else>
                   <!-- <h4>제목</h4> -->
                   <h3>{{ updatedTitle }}</h3>
                   <br>
@@ -185,12 +185,14 @@ const updateArticle = function (articleId){
 
 const editArticle = function () {
   editFlag.value = true
-  updatedTitle.value = article.title
-  updatedContent.value = article.content
+  updatedTitle.value = article.value.title
+  updatedContent.value = article.value.content
 }
 
 const cancelEdit = function () {
   editFlag.value = false
+  updatedTitle.value = article.value.title
+  updatedContent.value = article.value.content
 }
 
 const getComments = function () {
