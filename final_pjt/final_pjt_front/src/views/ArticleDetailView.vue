@@ -84,6 +84,7 @@
       </div>
     </div>
   </div>
+  <hr>
   <RouterView />
 </template>
 
@@ -93,7 +94,6 @@ import { useBankStore } from '@/stores/bank'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-import Swal from 'sweetalert2'
 
 const route = useRoute()
 const router = useRouter()
@@ -114,19 +114,17 @@ updatedContent.value = article.value.content
 
 const comments = ref([])
 const content = ref(null)
-const content2 = ref(null)
-content2.value = content.value
 const check = ref(0)
+
 
 onMounted(async () => {
   store.getArticles()
   getComments()
 })
-
 const deleteArticle = function (articleId) {
   const article = store.articles.find((element) => element.id === articleId)
   axios({
-    method: 'delete',
+    method:'delete',
     url: `http://127.0.0.1:8000/articles/delete_article/${article.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
@@ -136,27 +134,10 @@ const deleteArticle = function (articleId) {
     }
   })
   .then((response) => {
-    router.push({ name: 'community' }) // 게시물 삭제 후 커뮤니티 페이지로 이동
+    router.push({ name: 'community' })
   })
   .catch((error) => {
     console.log(error)
-  })
-}
-
-const confirmDeleteArticle = function (articleId) {
-  Swal.fire({
-    title: '이 게시물을 삭제하시겠습니까?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
-    icon: 'warning'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteArticle(articleId)
-      Swal.fire('삭제되었습니다.', '', 'info')
-    } else {
-      Swal.fire('삭제가 취소되었습니다.', '', 'info')
-    }
   })
 }
 
@@ -177,7 +158,6 @@ const updateArticle = function (articleId){
     console.log(response)
     editFlag.value = false
     store.getArticles()
-    alert('게시물이 수정되었습니다')
   })
   .catch((err)=>{
     console.log(err)
@@ -186,8 +166,8 @@ const updateArticle = function (articleId){
 
 const editArticle = function () {
   editFlag.value = true
-  updatedTitle.value = article.value.title
-  updatedContent.value = article.value.content
+  updatedTitle.value = article.title
+  updatedContent.value = article.content
 }
 
 const cancelEdit = function () {
@@ -203,6 +183,7 @@ const getComments = function () {
     },
     data: {
       articleId: article.value.id,
+      
     }
   })
   .then((response) => {
@@ -216,7 +197,6 @@ const getComments = function () {
 
 const deleteComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
-  const article = store.articles.find((element) => element.id === articleId)
   axios({
     method: 'delete',
     url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
@@ -253,43 +233,37 @@ const createComment = function () {
   })
   .catch((error) => {
     console.log(error)
-    alert('댓글을 작성해주세요')
   })
 }
 
-const change = function (commentId) {
-  check.value = commentId - check.value
+const change = function () {
+  check.value = 1-check.value
 }
 
 const updateComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
   axios({
     method: 'put',
-    url: `http://127.0.0.1:8000/articles/${articleId}/update_comment/${comment.id}/`,
+    url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
     data: {
-      content: content2.value,
+      content: content.value,
       articleId: article.id,
       commentId: comment.id,
     }
   })
   .then((response) => {
     getComments()
-    change(commentId)
-    content2.value = ''
-    alert('댓글 수정이 완료되었습니다.')
+    change()
+    content.value = ''
   })
   .catch((error) => {
-    alert("수정할 댓글을 입력해주세요.")
     console.log(error)
   })
 }
 
-const goToCommunity = function () {
-  router.push({ name: 'community'})
-}
 </script>
 
 
