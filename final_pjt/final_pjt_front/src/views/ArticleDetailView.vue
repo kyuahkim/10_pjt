@@ -1,85 +1,107 @@
 <template>
-  <div>
-    <h1>게시물 상세 페이지</h1>
-  </div>
-  <div v-if="article.user == currentUser.id && !editFlag">
-    <button class="button-spacing" @click.prevent="confirmDeleteArticle(article.id)" style="margin-right: 10px;">
-      게시물 삭제
-    </button>
-    <button @click.prevent="editArticle">게시물 수정</button>
-  </div>
-  <hr>
-  <div>
-    <div>
-      <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
-      <span style="display: inline-block; margin-left: 20px;">
-        <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
-          <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
-          <span v-else>🤍</span>
-        </button>
-      </span>
-    </div>
-    <hr>
-      <div v-if="editFlag">
-        <h4>제목 수정</h4>
-        <input type="text" v-model="updatedTitle"/>
-        <h4>내용 수정</h4>
-        <textarea v-model="updatedContent" style="width: 500px; height: 500px;"></textarea>
-        <br>
-        <button @click.prevent="updateArticle(article.id)" style="margin-right: 10px;">저장</button>
-        <button @click.prevent="cancelEdit">취소</button>
-      </div>
-      <div v-else>
-        <h4>제목</h4>
-        <p>{{ updatedTitle }}</p>
-        <h4>내용</h4>
-        <p>{{ updatedContent }}</p>
-      </div>
-    </div>
-  <hr>
-  <RouterLink :to="{name:'community'}">게시물 목록 돌아가기</RouterLink>
-  <hr>
-  <div>
-    <h4>댓글</h4>
-    <ul v-if="comments.length">
-      <li v-for="comment of comments">
-        {{ comment }}
-        <p>{{ comment.content }}</p>
-        <p v-if="comment.user == currentUser.id">
-          <div v-if="check != comment.id">
-            <form @submit.prevent="change(comment.id)" style="display: inline-block; margin-right: 10px;">
-              <input type="submit" value="수정">
-            </form>
-            <form @submit.prevent="deleteComment(comment.id)" style="display: inline-block;">
-              <input type="submit" value="삭제">
-            </form>
-          </div>
-          <div v-if="check == comment.id">
-            <form @submit.prevent="updateComment(comment.id)">
-              <br>
-              <div>
-                <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
+  <button type="button" class="btn btn-outline-dark" @click.prevent="goToCommunity"> 게시물 목록 돌아가기</button>
+
+  <br>
+  <br>
+  <h1>게시물 상세 페이지</h1>
+  <div class="main bg-light p-4">
+    <div class="row">
+      <div class="col-12">
+        <div v-if="article.user == currentUser.id && !editFlag" style="margin-bottom: 20px;">
+          <button type="button" class="btn btn-outline-success" style="margin-right: 10px;" @click.prevent="editArticle">게시물 수정</button>
+          <button type="button" class="btn btn-outline-danger" @click.prevent="confirmDeleteArticle(article.id)">게시물 삭제</button>
+        </div>
+        <div class="card card-body shadow-sm mb-4 ">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+                <b>작성자 : {{ writer.username }} </b>
+                <p> {{ article.created_at.slice(0,10) }}  {{ article.created_at.slice(11,19) }}</p>
+                <hr>
+                <br>
+                <div v-if="editFlag" class="title">
+                  <h4>제목 수정</h4>
+                  <input type="text" v-model="updatedTitle"/>
+                  <hr>
+                  <h4>내용 수정</h4>
+                  <textarea v-model="updatedContent" style="width: 500px; height: 500px;"></textarea>
+                  <br>
+                  <button type="button" class="btn btn-outline-success" @click.prevent="updateArticle(article.id)" style="margin-right: 10px;">저장</button>
+                  <button type="button" class="btn btn-outline-danger"  @click.prevent="cancelEdit">취소</button>
+                </div>
+                <div v-else class="title">
+                  <!-- <h4>제목</h4> -->
+                  <h3>{{ updatedTitle }}</h3>
+                  <br>
+                  <p>{{ updatedContent }}</p>
+                </div>
               </div>
-              <br>
-              <input type="submit" value="수정 완료">
-            </form>
+              
+              <div class="large d-flex justify-content-start mb-4" style="width: 100%;">
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item">
+                    <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
+                      <span v-if="article.like_users.includes(currentUser.id)"><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span>
+                      <span v-else><font-awesome-icon :icon="['far', 'thumbs-up']" /></span>
+                    </button>
+                    <span>{{ article.like_users.length }}</span>
+                  </li>
+                  <li class="list-group-item">
+                    <div style="margin-top: 7px; margin-left: 10px;">
+                      <span style="margin-right: 15px;"><font-awesome-icon :icon="['fas', 'comment']" /></span>
+                      <span>{{ comments.length }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="shadow-line"></div>
+              <div>
+                <h4>댓글</h4>
+                <ul v-if="comments.length">
+                  <li v-for="comment of comments">
+                    <p>{{ comment.content }}</p>
+                    <p v-if="comment.user == currentUser.id">
+                      <div v-if="check != comment.id">
+                        <button type="button" class="btn btn-outline-success" @click.prevent="change(comment.id)" style="display: inline-block; margin-right: 10px;">수정</button>
+                        <button type="button" class="btn btn-outline-danger" @click.prevent="deleteComment(comment.id)" style="display: inline-block;">삭제</button>
+                      </div>
+                      <div v-if="check == comment.id">
+                        <div>
+                          <br>
+                          <div>
+                            <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
+                          </div>
+                          <br>
+                          <button type="button" class="btn btn-outline-secondary" @click.prevent="updateComment(comment.id)">수정 완료</button>
+                        </div>
+                      </div>
+                    </p>
+                  </li>
+                </ul>
+                <ul v-else>
+                  <p>아직 등록된 댓글이 없습니다.</p>
+                </ul>
+              </div>
+              <hr>
+              <div>
+              <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                <form>
+                  <div class="d-flex flex-start w-100">
+                  <div data-mdb-input-init class="form-outline w-100">
+                    <textarea class="form-control" type="text" id="content" v-model.trim="content" rows="4"
+                    style="background: #fff;"></textarea>
+                  </div>
+                </div>
+                <div class="float-end mt-3 pt-1">
+                  <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-success btn-sm" @click.prevent="createComment">댓글 작성</button>
+                  <!-- <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm">Cancel</button> -->
+                </div>
+              </form>
+              </div>
+            </div>
           </div>
-        </p>
-      </li>
-    </ul>
-    <ul v-else>
-      <p>아직 등록된 댓글이 없습니다.</p>
-    </ul>
-  </div>
-  <hr>
-  <div>
-    <form @submit.prevent="createComment">
-      <div>
-        <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
+        </div>
       </div>
-      <br>
-      <input type="submit" value="댓글 작성">
-    </form>
+    </div>
   </div>
   <hr>
   <RouterView />
@@ -91,7 +113,6 @@ import { useBankStore } from '@/stores/bank'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-import Swal from 'sweetalert2'
 
 const route = useRoute()
 const router = useRouter()
@@ -102,7 +123,7 @@ const article = ref({})
 const writer = ref({})
 
 article.value = store.articles.find((element) => element.id === articleId)
-writer.value = store.userdata.find((element) => element.id === article.user)
+writer.value = store.userdata.find((element) => element.id === article.value.user)
 const currentUser = store.currentUserData
 const editFlag = ref(false)
 const updatedTitle = ref('')
@@ -112,19 +133,17 @@ updatedContent.value = article.value.content
 
 const comments = ref([])
 const content = ref(null)
-const content2 = ref(null)
-content2.value = content.value
 const check = ref(0)
+
 
 onMounted(async () => {
   store.getArticles()
   getComments()
 })
-
 const deleteArticle = function (articleId) {
   const article = store.articles.find((element) => element.id === articleId)
   axios({
-    method: 'delete',
+    method:'delete',
     url: `http://127.0.0.1:8000/articles/delete_article/${article.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
@@ -138,23 +157,6 @@ const deleteArticle = function (articleId) {
   })
   .catch((error) => {
     console.log(error)
-  })
-}
-
-const confirmDeleteArticle = function (articleId) {
-  Swal.fire({
-    title: '이 게시물을 삭제하시겠습니까?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
-    icon: 'warning'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteArticle(articleId)
-      Swal.fire('삭제되었습니다.', '', 'info')
-    } else {
-      Swal.fire('삭제가 취소되었습니다.', '', 'info')
-    }
   })
 }
 
@@ -175,7 +177,6 @@ const updateArticle = function (articleId){
     console.log(response)
     editFlag.value = false
     store.getArticles()
-    alert('게시물이 수정되었습니다')
   })
   .catch((err)=>{
     console.log(err)
@@ -184,8 +185,8 @@ const updateArticle = function (articleId){
 
 const editArticle = function () {
   editFlag.value = true
-  updatedTitle.value = article.value.title
-  updatedContent.value = article.value.content
+  updatedTitle.value = article.title
+  updatedContent.value = article.content
 }
 
 const cancelEdit = function () {
@@ -201,6 +202,7 @@ const getComments = function () {
     },
     data: {
       articleId: article.value.id,
+      
     }
   })
   .then((response) => {
@@ -214,7 +216,6 @@ const getComments = function () {
 
 const deleteComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
-  const article = store.articles.find((element) => element.id === articleId)
   axios({
     method: 'delete',
     url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
@@ -254,36 +255,38 @@ const createComment = function () {
   })
 }
 
-const change = function (commentId) {
-  check.value = commentId - check.value
+const change = function () {
+  check.value = 1-check.value
 }
 
 const updateComment = function (commentId) {
   const comment = comments.value.find((element) => element.id === commentId)
   axios({
     method: 'put',
-    url: `http://127.0.0.1:8000/articles/${articleId}/update_comment/${comment.id}/`,
+    url: `http://127.0.0.1:8000/articles/${article.id}/update_comment/${comment.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
     },
     data: {
-      content: content2.value,
+      content: content.value,
       articleId: article.id,
       commentId: comment.id,
     }
   })
   .then((response) => {
     getComments()
-    change(commentId)
-    content2.value = ''
-    alert('댓글 수정이 완료되었습니다.')
+    change()
+    content.value = ''
   })
   .catch((error) => {
-    alert("수정할 댓글을 입력해주세요.")
     console.log(error)
   })
 }
-console.log(check.value)
+
+const goToCommunity = function() {
+  router.push({name:'community'})
+}
+
 </script>
 
 
@@ -292,5 +295,18 @@ console.log(check.value)
   display: flex;
   gap: 10px; /* form 태그 사이에 간격을 두고 싶으면 사용 */
   align-items: center; /* 수직 정렬을 중앙으로 맞추기 위해 사용 */
+}
+
+.shadow-line {
+  height: 1px;
+  background: #000;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+}
+
+.title{
+  height: 700px;
+  align-items: center;
+  justify-content: center;
 }
 </style>

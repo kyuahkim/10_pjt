@@ -39,8 +39,12 @@ import {
   faUserPlus,
   faSignature,
   faTable,
+  faThumbsUp,
+  faShare,
+  faComment,
 } from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
+import { faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
   faSearch,
@@ -72,7 +76,11 @@ library.add(
   faSignInAlt,
   faUserPlus,
   faSignature,
-  faTable
+  faTable,
+  faThumbsUp,
+  faShare,
+  farThumbsUp,
+  faComment,
 )
 
 const app = createApp(App)
