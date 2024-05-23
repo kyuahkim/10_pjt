@@ -1,14 +1,19 @@
 <template>
   <h1>주변 은행 검색</h1>
   <hr>
+<<<<<<< Updated upstream
 
   <main class="content">
+=======
+  <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 bg-light"> -->
+
+>>>>>>> Stashed changes
     <div class="row">
-      <div class="col-12 mb-4">
+      <div class="col-12">
         <div class="card border-light shadow-sm ">
           <div class="card-body">
             <!-- selectbar start  -->
-            <div class="d-flex justify-content-center mb-2" style="height:100px;">
+            <div class="d-flex justify-content-center mb-2" style="height:100px ">
               <div class="row">
                 <div class="col align-self-center">
                   <select name="city" id="city" v-model="city" class="form-select select" aria-label="시">
@@ -88,7 +93,11 @@
         </div>
       </div>
     </div>
+<<<<<<< Updated upstream
   </main>
+=======
+  <!-- </div> -->
+>>>>>>> Stashed changes
 </template>
 
 <script setup>
@@ -230,4 +239,13 @@ onMounted(() => {
   width: 500px;
   height: 400px;
 }
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-left: 70px; /* 카드 자체를 가운데로 정렬 */
+}
+
 </style>
