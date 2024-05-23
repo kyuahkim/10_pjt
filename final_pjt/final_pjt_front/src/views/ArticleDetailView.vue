@@ -1,85 +1,88 @@
 <template>
-  <div>
-    <h1>게시물 상세 페이지</h1>
-  </div>
-  <div v-if="article.user == currentUser.id">
-    <button @click.prevent="deleteArticle(article.id)">
-      게시물 삭제
-    </button>
-    <button @click.prevent="editArticle">게시물 수정</button>
-  </div>
-  <hr>
-  <div>
-      <div >
-        <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
-        <span style="display: inline-block; margin-left: 20px;">
-          <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
-            <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
-            <span v-else>🤍</span>
-          </button>
-        </span>
-      </div>
-      <hr>
-        <div v-if="editFlag">
-        <h4>제목 수정</h4>
-        <input type="text" v-model="updatedTitle" />
-        <h4>내용 수정</h4>
-        <textarea v-model="updatedContent"></textarea>
-        <button @click.prevent="updateArticle(article.id)">저장</button>
-        <button @click.prevent="cancelEdit">취소</button>
+  <h1>게시물 상세 페이지</h1>
+  <div class="main bg-light p-4">
+    <div class="row">
+      <div class="col-12">
+        <div v-if="article.user == currentUser.id && !editFlag" style="margin-bottom: 20px;">
+          <button type="button" class="btn btn-outline-success" style="margin-right: 10px;" @click.prevent="editArticle">게시물 수정</button>
+          <button type="button" class="btn btn-outline-danger" @click.prevent="confirmDeleteArticle(article.id)">게시물 삭제</button>
         </div>
-        <div v-else>
-          <h4>제목</h4>
-          <p>{{ updatedTitle }}</p>
-          <h4>내용</h4>
-          <p>{{ updatedContent }}</p>
-        </div>
-
-  </div>
-  <hr>
-  <RouterLink :to="{name:'community'}">게시물 목록 돌아가기</RouterLink>
-  <hr>
-  
-  
-  <div>
-    <h4>댓글</h4>
-    <ul v-if="comments.length">
-      <li v-for="comment of comments">
-        {{ comment }}
-        <p>{{ comment.content }}</p>
-        <p>작성자 : {{ comment.user }}</p>
-        <p v-if="comment.user == currentUser.id">
-          <form @submit.prevent="deleteComment(comment.id)">
-            <input type="submit" value="삭제">
-          </form>
-          <form @submit.prevent="change">
-            <input type="submit" value="수정">
-          </form>
-          <div v-if="check">
-            <form @submit.prevent="updateComment(comment.id)">
+        <div class="card card-body shadow-sm mb-4 ">
+          <div class="row">
+            <div class="col-md-12 mb-3">
               <div>
-                <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
+                <span style="display: inline-block; margin-right: 20px;">좋아요 수 : {{ article.like_users.length }}</span>
+                <span style="display: inline-block; margin-left: 20px;">
+                  <button @click.prevent="store.interestArticle(article, currentUser.id)" class="btn">
+                    <span v-if="article.like_users.includes(currentUser.id)">❤️</span>
+                    <span v-else>🤍</span>
+                  </button>
+                </span>
               </div>
-              <br>
-              <input type="submit" value="수정 완료">
-            </form>
+              <div class="shadow-line"></div>
+                <div v-if="editFlag">
+                  <h4>제목 수정</h4>
+                  <input type="text" v-model="updatedTitle"/>
+                  <hr>
+                  <h4>내용 수정</h4>
+                  <textarea v-model="updatedContent" style="width: 500px; height: 500px;"></textarea>
+                  <br>
+                  <button type="button" class="btn btn-outline-success" @click.prevent="updateArticle(article.id)" style="margin-right: 10px;">저장</button>
+                  <button type="button" class="btn btn-outline-danger"  @click.prevent="cancelEdit">취소</button>
+                </div>
+                <div v-else>
+                  <h4>제목</h4>
+                  <p>{{ updatedTitle }}</p>
+                  <hr>
+                  <h4>내용</h4>
+                  <p>{{ updatedContent }}</p>
+                </div>
+              </div>
+            <div class="shadow-line"></div>
+            <div>
+              <h4>댓글</h4>
+              <ul v-if="comments.length">
+                <li v-for="comment of comments">
+                  <p>{{ comment.content }}</p>
+                  <p v-if="comment.user == currentUser.id">
+                    <div v-if="check != comment.id">
+                      <button type="button" class="btn btn-outline-success" @click.prevent="change(comment.id)" style="display: inline-block; margin-right: 10px;">수정</button>
+                      <button type="button" class="btn btn-outline-danger" @click.prevent="deleteComment(comment.id)" style="display: inline-block;">삭제</button>
+                    </div>
+                    <div v-if="check == comment.id">
+                      <div>
+                        <br>
+                        <div>
+                          <textarea type="text" id="content" v-model.trim="content2" style="width: 500px;height: 150px;"></textarea>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-outline-secondary" @click.prevent="updateComment(comment.id)">수정 완료</button>
+                      </div>
+                    </div>
+                  </p>
+                </li>
+              </ul>
+              <ul v-else>
+                <p>아직 등록된 댓글이 없습니다.</p>
+              </ul>
+            </div>
+            <hr>
+            <div>
+              <form>
+                <div>
+                  <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
+                </div>
+                <br>
+                <button type="button" class="btn btn-outline-success" @click.prevent="createComment">댓글 작성</button>
+              </form>
+            </div>
+            <div class="shadow-line"></div>
+            <button type="button" class="btn btn-outline-dark" @click.prevent="goToCommunity">게시물 목록 돌아가기</button>
+            <hr>
           </div>
-        </p>
-      </li>
-    </ul>
-    <ul v-else>
-      <p>아직 등록된 댓글이 없습니다.</p>
-    </ul>
-  </div>
-  <hr>
-  <div>
-    <form @submit.prevent="createComment">
-      <div>
-        <textarea type="text" id="content" v-model.trim="content" style="width: 500px;height: 150px;"></textarea>
+        </div>
       </div>
-      <br>
-      <input type="submit" value="댓글 작성">
-    </form>
+    </div>
   </div>
   <hr>
   <RouterView />
@@ -101,7 +104,7 @@ const article = ref({})
 const writer = ref({})
 
 article.value = store.articles.find((element) => element.id === articleId)
-writer.value = store.userdata.find((element) => element.id === article.user)
+writer.value = store.userdata.find((element) => element.id === article.value.user)
 const currentUser = store.currentUserData
 const editFlag = ref(false)
 const updatedTitle = ref('')
@@ -265,4 +268,16 @@ const updateComment = function (commentId) {
 
 
 <style scoped>
+.row {
+  display: flex;
+  gap: 10px; /* form 태그 사이에 간격을 두고 싶으면 사용 */
+  align-items: center; /* 수직 정렬을 중앙으로 맞추기 위해 사용 */
+}
+
+.shadow-line {
+  height: 2px;
+  background: #000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+}
 </style>

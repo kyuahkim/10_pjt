@@ -37,13 +37,13 @@
   <h1>가입한 상품 금리를 한번에 모아보세요</h1>
   <hr>
   <div v-if="chartData">
-    <div class="row justify-content-center">
-      <div class="col-12 mx-4">
-        <div class="chart-container">
-          <Bar :data="chartData" :options="chartOptions" />
-        </div>
-      </div>
+    <div class="chart-container">
+      <Bar :data="chartData" :options="chartOptions" />
     </div>
+    <!-- <div class="row justify-content-center">
+      <div class="col-12 mx-4">
+      </div>
+    </div> -->
   </div>
 </template>
 
