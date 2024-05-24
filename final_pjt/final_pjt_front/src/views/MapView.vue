@@ -34,6 +34,10 @@
               </div>
             </div>
             <div id="map" class="col" style=" width:100%; height: 550px"></div>
+            <hr>
+            <ul>
+              <li v-for="place in places" :key="place.id">{{ place.place_name }}</li>
+            </ul>
           </div>
         </div>
       </div>
