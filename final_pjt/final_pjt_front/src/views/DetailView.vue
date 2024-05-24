@@ -44,7 +44,7 @@
               </div>
               <div>
                 <button type="button" class="btn btn-outline-primary" @click.prevent="goToProducts">
-                    목록으로 돌아가기
+                  목록으로 돌아가기
                 </button>
               </div>
             </div>
@@ -53,13 +53,6 @@
       </div>
     </div>
   </div>
-  <div>
-    <RouterLink
-      :to="{ name: 'products'}">
-      목록으로 돌아가기
-    </RouterLink>
-  </div>
-  <RouterView />
 </template>
 
 
@@ -96,7 +89,7 @@ const fetchProductOptions = (product) => {
 }
 
 const goToProducts = function () {
-  router.push({name: 'community'})
+  router.push({name: 'products'})
 }
 
 onMounted(() => {

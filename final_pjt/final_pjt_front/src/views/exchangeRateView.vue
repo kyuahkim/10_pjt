@@ -77,7 +77,7 @@ export default {
     },
     calculateToForeign() {
       if (!this.beforeWon || !this.selectedExchange || !this.selectedExchange.tts) {
-        return 'Invalid Input'
+        return '값을 입력해 주세요!'
       }
       const tts = parseFloat(this.selectedExchange.tts.replace(/,/g, ''))
       const result = parseFloat(this.beforeWon) / tts;
@@ -86,7 +86,7 @@ export default {
     },
     calculateToWon() {
       if (!this.beforeForeign || !this.selectedExchangeToWon || !this.selectedExchangeToWon.ttb) {
-        return 'Invalid Input'
+        return '값을 입력해 주세요!'
       }
       const ttb = parseFloat(this.selectedExchangeToWon.ttb.replace(/,/g, ''))
       const result = parseFloat(this.beforeForeign) * ttb
