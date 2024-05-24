@@ -93,7 +93,6 @@ const userId = store.currentUserData.id
 
 const getProductsByOptions = () => {
   const productIds = productOptions.value.map(option => option.product)
-  console.log(productOptions.value)
   return store.products.filter(product => productIds.includes(product.id))
 }
 
@@ -176,7 +175,6 @@ const chartOptions = ref({
 const loadChartData = () => {
   const productIds = productOptions.value.map(option => option.product)
   productnames.value = store.products.filter(product => productIds.includes(product.id))
-  console.log(productIds)
   const labels = ref([])
   for (const productId of productIds) {
     const product = products.value.find((element) => element.id === productId)
@@ -229,12 +227,10 @@ onMounted(() => {
     },
   })
   .then((response)=>{
-    console.log(response.data)
     // response.json()
     return response
   })
   .then((response)=>{
-    console.log('data',response.data.recommendations)
     recommendProductsCd.value = response.data.recommendations
     recommendProducts.value = store.products.filter(product => recommendProductsCd.value.includes(product.fin_prdt_cd))
   })

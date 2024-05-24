@@ -52,7 +52,6 @@ const selectedBank = ref("")
 const selectedRegion = ref("")
 const places = ref([])
 let map
-console.log(places.value)
 
 const initializeMap = () => {
   const container = document.getElementById("map");
