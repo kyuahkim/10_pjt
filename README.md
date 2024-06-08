@@ -23,7 +23,7 @@
         * 목표 : 기존 데이터를 기반으로 한 금융 상품 추천 서비스
     2. 구성 요소
 
-        ![component](./image/component.png)
+        ![component](/image/component.png)
 
         * ArticleDetailView : 게시물 상세 정보(수정 및 삭제, 댓글)
         * CommunityView : 커뮤니티 페이지
@@ -71,29 +71,29 @@
 
 
 # 8️⃣ 주요 화면
-![main page](image.png)
+![main page](image/image.png)
 --
-![login](image-1.png)
+![login](image/image-1.png)
 --
-![sign up](image-2.png)
+![sign up](image/image-2.png)
 --
-![exchange rate](image-3.png)
+![exchange rate](image/image-3.png)
 --
-![products](image-4.png)
+![products](image/image-4.png)
 --
-![map](image-5.png)
+![map](image/image-5.png)
 --
 |상품 디테일 1|상품 디테일 2|
 |:---:|:---:|
-|![detail](image-6.png)|![detail2](image-7.png)|
+|![detail](image/image-6.png)|![detail2](image/image-7.png)|
 
 --
 |커뮤니티|게시글|
 |:---:|:---:|
-|![community](image-8.png) |![article](image-9.png)|
+|![community](image/image-8.png) |![article](image/image-9.png)|
 
 --
-![mypage](image-10.png)
+![mypage](image/image-10.png)
 --
-![joined products](image-11.png)
-![AI](image-12.png)
+![joined products](image/image-11.png)
+![AI](image/image-12.png)
